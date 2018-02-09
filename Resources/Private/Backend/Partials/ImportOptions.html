@@ -1,0 +1,80 @@
+<f:if condition="{importJob}">
+    <h2>
+        <f:translate key="importOptions.header"/>
+    </h2>
+    <f:form action="fieldMapping" name="importOptions" arguments="{importJob:importJob}">
+        <div class="form-group">
+            <label for="targetFolder">
+                {f:translate(key: 'importOptions.option.targetFolder.label')}
+            </label>
+            <f:form.select name="targetFolder" additionalAttributes="{required: true}" class="form-control" id="targetFolder" options="{frontendUserFolders}"
+                           optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" prependOptionLabel="" prependOptionValue=""/>
+            <br/>
+            <small class="form-text text-muted">{f:translate(key: 'importOptions.option.targetFolder.help')}</small>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <f:form.checkbox name="firstRowContainsFieldNames" value="1" class="form-check-input" id="firstRowContainsFieldNames"/>
+                <label class="form-check-label" for="firstRowContainsFieldNames">
+                    {f:translate(key: 'importOptions.option.firstRowContainsFieldNames.label')}
+                </label>
+                <br/>
+                <small class="form-text text-muted">{f:translate(key: 'importOptions.option.firstRowContainsFieldNames.help')}</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <f:form.checkbox name="useEmailAsUsername" value="1" class="form-check-input" id="useEmailAsUsername"/>
+                <label class="form-check-label" for="useEmailAsUsername">
+                    {f:translate(key: 'importOptions.option.useEmailAsUsername.label')}
+                </label>
+                <br/>
+                <small class="form-text text-muted">{f:translate(key: 'importOptions.option.useEmailAsUsername.help')}</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <f:form.checkbox name="generatePassword" value="1" class="form-check-input" id="generatePassword"/>
+                <label class="form-check-label" for="generatePassword">
+                    {f:translate(key: 'importOptions.option.generatePassword.label')}
+                </label>
+                <br/>
+                <small class="form-text text-muted">{f:translate(key: 'importOptions.option.generatePassword.help')}</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="userGroups">
+                {f:translate(key: 'importOptions.option.userGroups.label')}
+            </label>
+            <f:form.select name="userGroups" multiple="true" class="form-control" id="userGroups" options="{frontendUserGroups}" optionValueField="uid"
+                           optionLabelField="title" sortByOptionLabel="true" prependOptionLabel="" prependOptionValue=""/>
+            <br/>
+            <small class="form-text text-muted">{f:translate(key: 'importOptions.option.userGroups.help')}</small>
+        </div>
+        <div class="form-group">
+
+            <div class="form-check">
+                <f:form.checkbox name="updateExistingUsers" value="1" class="form-check-input" id="updateExistingUsers"/>
+                <label class="form-check-label" for="updateExistingUsers">
+                    {f:translate(key: 'importOptions.option.updateExistingUsers.label')}
+                </label>
+                <br/>
+                <small class="form-text text-muted">{f:translate(key: 'importOptions.option.updateExistingUsers.help')}</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="updateExistingUsersUniqueField">
+                {f:translate(key: 'importOptions.option.updateExistingUsersUniqueField.label')}
+            </label>
+            <f:form.select name="updateExistingUsersUniqueField" class="form-control" id="updateExistingUsersUniqueField" optionValueField="value"
+                           optionLabelField="label"
+                           options="{frontendUserTableFieldNames}" sortByOptionLabel="true" prependOptionLabel="" prependOptionValue=""/>
+            <br/>
+            <small class="form-text text-muted">{f:translate(key: 'importOptions.option.updateExistingUsersUniqueField.help')}</small>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">{f:translate(key: 'importOptionsSubmit.label')}</button>
+        </div>
+    </f:form>
+</f:if>
+

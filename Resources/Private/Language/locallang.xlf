@@ -21,6 +21,51 @@
 			<trans-unit id="spreadsheetPreview.help">
 				<source>Only the first 5 rows are displayed.</source>
 			</trans-unit>
+			<trans-unit id="importOptions.header">
+				<source>Import options</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.firstRowContainsFieldNames.label">
+				<source>First row contains field names</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.firstRowContainsFieldNames.help">
+				<source>If selected, the first row is ignored when importing.</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.targetFolder.label">
+				<source>Target folder</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.userGroups.label">
+				<source>User groups</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.userGroups.help">
+				<source>The selected user groups are assigned to the created users.</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.useEmailAsUsername.label">
+				<source>Use e-mail column as username</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.useEmailAsUsername.help">
+				<source>The value of the e-mail column is used as username.</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.generatePassword.label">
+				<source>Generate password</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.generatePassword.help">
+				<source>A random password is generated for imported users. Alternatively, you can import a password column.</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsers.label">
+				<source>Update existing users</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsers.help">
+				<source>Update existing users instead of adding new users.</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.label">
+				<source>Field to check for update</source>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.help">
+				<source>The field to check if a user must be updated.</source>
+			</trans-unit>
+			<trans-unit id="importOptionsSubmit.label">
+				<source>Continue</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

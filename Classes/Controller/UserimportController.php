@@ -42,6 +42,12 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     protected $spreadsheetService = null;
 
     /**
+     * @var \Visol\Userimport\Service\TcaService
+     * @inject
+     */
+    protected $tcaService = null;
+
+    /**
      * @return void
      */
     public function mainAction()
@@ -76,14 +82,22 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $this->redirect('options', null, null, ['importJob' => $importJob]);
     }
 
+    /**
+     * @param ImportJob $importJob
+     */
     public function optionsAction(ImportJob $importJob) {
         $this->view->assign('importJob', $importJob);
+        $this->view->assign('allowedFolders', $importJob);
 
         if ($importJob->getFile() instanceof FileReference) {
             $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
             $spreadsheetContent = $this->spreadsheetService->getContent($fileName, 5);
             $this->view->assign('spreadsheetContent', $spreadsheetContent);
         }
+
+        $this->view->assign('frontendUserFolders', $this->tcaService->getFrontendUserFolders());
+        $this->view->assign('frontendUserGroups', $this->tcaService->getFrontendUserGroups());
+        $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableFieldNames());
     }
 
 }
