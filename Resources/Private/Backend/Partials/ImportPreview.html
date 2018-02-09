@@ -3,6 +3,7 @@
         <f:translate key="importPreview.header"/>
     </h2>
     <f:form action="performImport" name="importPreview" arguments="{importJob:importJob}">
+        <f:render partial="ValidationResults"/>
         <table class="table table-striped">
             <thead>
             <tr>

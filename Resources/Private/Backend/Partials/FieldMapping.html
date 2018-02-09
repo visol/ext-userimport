@@ -3,6 +3,7 @@
         <f:translate key="fieldMapping.header"/>
     </h2>
     <f:form action="importPreview" name="fieldMapping" arguments="{importJob:importJob}">
+        <f:render partial="ValidationResults"/>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -20,9 +21,9 @@
             <tbody>
             <f:for each="{columnLabelsAndExamples}" as="labelAndExamples">
                 <tr>
-                    <td>{labelAndExamples.label}</td>
-                    <td>
-                        <div class="form-group">
+                    <td class="align-top">{labelAndExamples.label}</td>
+                    <td class="align-top">
+                        <div class="form-group mb-0">
                             <f:form.select name="fieldMapping[{labelAndExamples.index}]" class="form-control"
                                            options="{frontendUserTableFieldNames}"
                                            optionValueField="value"
@@ -33,7 +34,7 @@
                             <br/>
                         </div>
                     </td>
-                    <td>
+                    <td class="align-top">
                         <ul class="list-unstyled">
                             <f:for each="{labelAndExamples.examples}" as="example">
                                 <li>{example}</li>

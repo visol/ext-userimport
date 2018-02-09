@@ -1,40 +1,7 @@
-
-table.typo3-dblist tr td.col-icon {
-	vertical-align: top;
+.align-top {
+	vertical-align: top !important;
 }
 
-table.typo3-dblist td:nth-child(1) {
-	width: 5%;
-}
-
-table.typo3-dblist td:nth-child(2) {
-	width: 40%;
-}
-
-table.typo3-dblist td:nth-child(3) {
-	width: 55%;
-}
-
-#myinvitations-categorylist {
-	font-size: 10px;
-}
-
-#myinvitations-categorylist tr th {
-	text-align: left;
-	padding-left: 4px !important;
-}
-#myinvitations-categorylist tr td {
-	padding: 0 0 0 4px;
-}
-
-#myinvitations-categorylist td:nth-child(1) {
-	width: 40%;
-}
-
-#myinvitations-categorylist td:nth-child(2) {
-	width: 20%;
-}
-
-#myinvitations-categorylist td:nth-child(3) {
-	width: 30%;
+.mb-0 {
+	margin-bottom: 0;
 }

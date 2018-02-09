@@ -144,7 +144,8 @@ class SpreadsheetService implements SingletonInterface
             }
             $row = [];
             foreach ($fieldMapping as $columnIndex => $fieldName) {
-                $row[$fieldName] = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
+                $value = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
+                $row[$fieldName] = !empty($value) ? $value : '';
             }
 
             if (!array_filter($row)) {
@@ -188,6 +189,10 @@ class SpreadsheetService implements SingletonInterface
 
                 // PID
                 $rows[$i]['pid'] = (int)$importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
+
+                // crtime/tstamp
+                $rows[$i]['crdate'] = time();
+                $rows[$i]['tstamp'] = time();
 
                 // User groups
                 if (!empty($importJob->getImportOption(ImportJob::IMPORT_OPTION_USER_GROUPS))) {

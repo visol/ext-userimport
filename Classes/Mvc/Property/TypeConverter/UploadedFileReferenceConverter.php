@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Resource\File as FalFile;
 use TYPO3\CMS\Core\Resource\FileReference as FalFileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
@@ -160,49 +161,9 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
-     * Import a resource and respect configuration given for properties
-     *
-     * @param array $uploadInfo
-     * @param PropertyMappingConfigurationInterface $configuration
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
-     * @throws TypeConverterException
-     * @throws ExistingTargetFileNameException
-     */
-    protected function importUploadedResource(array $uploadInfo, PropertyMappingConfigurationInterface $configuration)
-    {
-        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($uploadInfo['name'])) {
-            throw new TypeConverterException('Uploading files with PHP file extensions is not allowed!', 1399312430);
-        }
-
-        $allowedFileExtensions = $configuration->getConfigurationValue('Helhum\\UploadExample\\Property\\TypeConverter\\UploadedFileReferenceConverter', self::CONFIGURATION_ALLOWED_FILE_EXTENSIONS);
-
-        if ($allowedFileExtensions !== null) {
-            $filePathInfo = PathUtility::pathinfo($uploadInfo['name']);
-            if (!GeneralUtility::inList($allowedFileExtensions, strtolower($filePathInfo['extension']))) {
-                throw new TypeConverterException('File extension is not allowed!', 1399312430);
-            }
-        }
-
-        $uploadFolderId = $configuration->getConfigurationValue('Helhum\\UploadExample\\Property\\TypeConverter\\UploadedFileReferenceConverter', self::CONFIGURATION_UPLOAD_FOLDER) ?: $this->defaultUploadFolder;
-        $defaultConflictMode = \TYPO3\CMS\Core\Resource\DuplicationBehavior::RENAME;
-        $conflictMode = $configuration->getConfigurationValue('Helhum\\UploadExample\\Property\\TypeConverter\\UploadedFileReferenceConverter', self::CONFIGURATION_UPLOAD_CONFLICT_MODE) ?: $defaultConflictMode;
-
-        $uploadFolder = $this->resourceFactory->retrieveFileOrFolderObject($uploadFolderId);
-        $uploadedFile =  $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
-
-        $resourcePointer = isset($uploadInfo['submittedFile']['resourcePointer']) && strpos($uploadInfo['submittedFile']['resourcePointer'], 'file:') === false
-            ? $this->hashService->validateAndStripHmac($uploadInfo['submittedFile']['resourcePointer'])
-            : null;
-
-        $fileReferenceModel = $this->createFileReferenceFromFalFileObject($uploadedFile, $resourcePointer);
-
-        return $fileReferenceModel;
-    }
-
-    /**
      * @param FalFile $file
      * @param int $resourcePointer
-     * @return \Visol\Userimport\Domain\Model\FileReference
+     * @return FileReference
      */
     protected function createFileReferenceFromFalFileObject(FalFile $file, $resourcePointer = null)
     {
@@ -218,17 +179,57 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
+     * Import a resource and respect configuration given for properties
+     *
+     * @param array $uploadInfo
+     * @param PropertyMappingConfigurationInterface $configuration
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @throws TypeConverterException
+     * @throws ExistingTargetFileNameException
+     */
+    protected function importUploadedResource(array $uploadInfo, PropertyMappingConfigurationInterface $configuration)
+    {
+        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($uploadInfo['name'])) {
+            throw new TypeConverterException('Uploading files with PHP file extensions is not allowed!', 1399312430);
+        }
+
+        $allowedFileExtensions = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_ALLOWED_FILE_EXTENSIONS);
+
+        if ($allowedFileExtensions !== null) {
+            $filePathInfo = PathUtility::pathinfo($uploadInfo['name']);
+            if (!GeneralUtility::inList($allowedFileExtensions, strtolower($filePathInfo['extension']))) {
+                throw new TypeConverterException('File extension is not allowed!', 1399312430);
+            }
+        }
+
+        $uploadFolderId = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_UPLOAD_FOLDER) ?: $this->defaultUploadFolder;
+        $defaultConflictMode = \TYPO3\CMS\Core\Resource\DuplicationBehavior::RENAME;
+        $conflictMode = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_UPLOAD_CONFLICT_MODE) ?: $defaultConflictMode;
+
+        $uploadFolder = $this->resourceFactory->retrieveFileOrFolderObject($uploadFolderId);
+        $uploadedFile =  $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
+
+        $resourcePointer = isset($uploadInfo['submittedFile']['resourcePointer']) && strpos($uploadInfo['submittedFile']['resourcePointer'], 'file:') === false
+            ? $this->hashService->validateAndStripHmac($uploadInfo['submittedFile']['resourcePointer'])
+            : null;
+
+        $fileReferenceModel = $this->createFileReferenceFromFalFileObject($uploadedFile, $resourcePointer);
+
+        return $fileReferenceModel;
+    }
+
+    /**
      * @param FalFileReference $falFileReference
      * @param int $resourcePointer
-     * @return \Visol\Userimport\Domain\Model\FileReference
+     * @return FileReference
      */
     protected function createFileReferenceFromFalFileReferenceObject(FalFileReference $falFileReference, $resourcePointer = null)
     {
         if ($resourcePointer === null) {
-            /** @var $fileReference \Visol\Userimport\Domain\Model\FileReference */
-            $fileReference = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference');
+            /** @var $fileReference FileReference */
+            $fileReference = $this->objectManager->get(FileReference::class);
         } else {
-            $fileReference = $this->persistenceManager->getObjectByIdentifier($resourcePointer, 'TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference', false);
+            $fileReference = $this->persistenceManager->getObjectByIdentifier($resourcePointer, FileReference::class, false);
         }
 
         $fileReference->setOriginalResource($falFileReference);

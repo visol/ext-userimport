@@ -3,6 +3,7 @@
         <f:translate key="importOptions.header"/>
     </h2>
     <f:form action="fieldMapping" name="importOptions" arguments="{importJob:importJob}">
+        <f:render partial="ValidationResults"/>
         <div class="form-group">
             <label for="targetFolder">
                 {f:translate(key: 'importOptions.option.targetFolder.label')}

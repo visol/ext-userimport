@@ -13,6 +13,9 @@ namespace Visol\Userimport\Controller;
  *
  ***/
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use Visol\Userimport\Domain\Model\ImportJob;
 use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
@@ -104,7 +107,8 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     /**
      * @param ImportJob $importJob
      */
-    public function fieldMappingAction(ImportJob $importJob) {
+    public function fieldMappingAction(ImportJob $importJob)
+    {
         $this->view->assign('importJob', $importJob);
 
         // Update ImportJob with options
@@ -128,7 +132,13 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         // Generate data for field mapping
         $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableFieldNames());
         $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
-        $this->view->assign('columnLabelsAndExamples', $this->spreadsheetService->getColumnLabelsAndExamples($fileName, $importJob->getImportOption(ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES)));
+        $this->view->assign(
+            'columnLabelsAndExamples',
+            $this->spreadsheetService->getColumnLabelsAndExamples(
+                $fileName,
+                $importJob->getImportOption(ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES)
+            )
+        );
     }
 
     /**
@@ -137,6 +147,8 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      */
     public function importPreviewAction(ImportJob $importJob, array $fieldMapping)
     {
+        $this->view->assign('importJob', $importJob);
+
         // Update ImportJob with field mapping
         $importJob->setFieldMapping($fieldMapping);
         $this->importJobRepository->update($importJob);
@@ -145,6 +157,67 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $previewData = $this->spreadsheetService->generateDataFromImportJob($importJob, true);
         $this->view->assign('previewDataHeader', array_keys($previewData[0]));
         $this->view->assign('previewData', $previewData);
+    }
 
+    /**
+     * @param ImportJob $importJob
+     */
+    public function performImportAction(ImportJob $importJob)
+    {
+        $rowsToImport = $this->spreadsheetService->generateDataFromImportJob($importJob);
+        $this->view->assign('rowsInSource', count($rowsToImport));
+
+        /** @var ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('fe_users');
+
+        $updateExisting = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS);
+
+        $updatedRecords = 0;
+        $insertedRecords = 0;
+
+        foreach ($rowsToImport as $row) {
+            if ($updateExisting) {
+                $updateExistingUniqueField = $importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD);
+                $existing = $queryBuilder
+                    ->count('uid')
+                    ->from('fe_users', null)
+                    ->where(
+                        $queryBuilder->expr()->eq($updateExistingUniqueField, $queryBuilder->createNamedParameter($row[$updateExistingUniqueField]))
+                    )
+                    ->execute()
+                    ->fetchColumn(0);
+                if ($existing) {
+                    $feUsersConnection = $connectionPool->getConnectionForTable('fe_users');
+                    $updatedRecords += $feUsersConnection->update(
+                        'fe_users',
+                        $row,
+                        [$updateExistingUniqueField => $row[$updateExistingUniqueField]]
+                    );
+
+                    continue;
+                }
+            }
+            // Must be newly imported
+            $insertedRecords += $queryBuilder
+                ->insert('fe_users', null)
+                ->values($row)
+                ->execute();
+            continue;
+        }
+
+        $this->view->assign('updatedRecords', $updatedRecords);
+        $this->view->assign('insertedRecords', $insertedRecords);
+    }
+
+    /**
+     * Deactivate errorFlashMessage
+     *
+     * @return bool|string
+     */
+    public function getErrorFlashMessage()
+    {
+        return false;
     }
 }

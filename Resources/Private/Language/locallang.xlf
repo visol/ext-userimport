@@ -90,6 +90,21 @@
 			<trans-unit id="importPreviewSubmit.label">
 				<source>Import data</source>
 			</trans-unit>
+			<trans-unit id="performImport.header">
+				<source>Import log</source>
+			</trans-unit>
+			<trans-unit id="performImport.rowsInSource">
+				<source>%s rows in source file</source>
+			</trans-unit>
+			<trans-unit id="performImport.insertedRecords">
+				<source>%s records imported</source>
+			</trans-unit>
+			<trans-unit id="performImport.updatedRecords">
+				<source>%s records updated</source>
+			</trans-unit>
+			<trans-unit id="error.1399312430">
+				<source>File extension not allowed. Allowed file types: xlsx, csv</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

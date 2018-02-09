@@ -1,0 +1,11 @@
+{namespace vi=Visol\Userimport\ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="content">
+    <div class="alert alert-info" role="alert">
+        {f:translate(key: 'performImport.rowsInSource', arguments: {0: rowsInSource})}<br />
+        {f:translate(key: 'performImport.updatedRecords', arguments: {0: updatedRecords})}<br />
+        {f:translate(key: 'performImport.insertedRecords', arguments: {0: insertedRecords})}
+    </div>
+</f:section>

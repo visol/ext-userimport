@@ -13,8 +13,6 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => true,
-        'sortby' => 'sorting',
-
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden'
