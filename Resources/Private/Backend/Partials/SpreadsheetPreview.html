@@ -1,0 +1,19 @@
+<f:if condition="{importJob}">
+    <h2>
+        <f:translate key="spreadsheetPreview.header" arguments="{0: importJob.file.originalResource.originalFile.name}"/>
+    </h2>
+    <f:if condition="{spreadsheetContent}">
+        <table class="table table-striped">
+            <tbody>
+                <f:for each="{spreadsheetContent}" as="row">
+                    <tr>
+                        <f:for each="{row}" as="cell">
+                            <td>{cell}</td>
+                        </f:for>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+        <p><small class="text-muted">{f:translate(key: 'spreadsheetPreview.help')}</small></p>
+    </f:if>
+</f:if>

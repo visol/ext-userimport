@@ -15,6 +15,12 @@
 			<trans-unit id="uploadSubmit.label">
 				<source>Upload</source>
 			</trans-unit>
+			<trans-unit id="spreadsheetPreview.header">
+				<source>Preview (File: %s)</source>
+			</trans-unit>
+			<trans-unit id="spreadsheetPreview.help">
+				<source>Only the first 5 rows are displayed.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

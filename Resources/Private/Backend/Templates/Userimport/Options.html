@@ -3,7 +3,8 @@
 <f:layout name="Default"/>
 
 <f:section name="content">
-    {importJob.file.originalResource.originalFile.name}
+    <f:render partial="SpreadsheetPreview" arguments="{_all}" />
+
 
     <f:comment>
     <f:form action="upload" name="importJob" object="{importJob}" enctype="multipart/form-data" >

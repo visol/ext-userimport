@@ -13,6 +13,7 @@ namespace Visol\Userimport\Controller;
  *
  ***/
 
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use Visol\Userimport\Domain\Model\ImportJob;
 use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 
@@ -33,6 +34,12 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      * @inject
      */
     protected $persistenceManager = null;
+
+    /**
+     * @var \Visol\Userimport\Service\SpreadsheetService
+     * @inject
+     */
+    protected $spreadsheetService = null;
 
     /**
      * @return void
@@ -71,6 +78,12 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 
     public function optionsAction(ImportJob $importJob) {
         $this->view->assign('importJob', $importJob);
+
+        if ($importJob->getFile() instanceof FileReference) {
+            $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
+            $spreadsheetContent = $this->spreadsheetService->getContent($fileName, 5);
+            $this->view->assign('spreadsheetContent', $spreadsheetContent);
+        }
     }
 
 }
