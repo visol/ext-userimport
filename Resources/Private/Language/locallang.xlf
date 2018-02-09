@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-09T11:23:13Z" product-name="userimport">
+		<header/>
+		<body>
+			<trans-unit id="moduleTitle">
+				<source>User Import</source>
+			</trans-unit>
+			<trans-unit id="uploadFile.label">
+				<source>Select file</source>
+			</trans-unit>
+			<trans-unit id="uploadFile.help">
+				<source>Allowed file extensions are: xlsx, csv</source>
+			</trans-unit>
+			<trans-unit id="uploadSubmit.label">
+				<source>Upload</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

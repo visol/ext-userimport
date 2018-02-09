@@ -1,0 +1,12 @@
+<f:layout name="Default"/>
+
+<f:section name="content">
+    <f:form action="upload">
+        <div class="form-group">
+            <label for="file">{f:translate(key: 'uploadFile.label')}</label>
+            <f:form.upload id="file" name="file" class="form-control-file"/>
+            <small class="form-text text-muted">{f:translate(key: 'uploadFile.help')}</small>
+        </div>
+        <button type="submit" class="btn btn-primary">{f:translate(key: 'uploadSubmit.label')}</button>
+    </f:form>
+</f:section>
