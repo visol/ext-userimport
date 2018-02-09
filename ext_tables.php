@@ -13,11 +13,12 @@ call_user_func(
                 'userimport', // Submodule key
                 '', // Position
                 [
-                    'Userimport' => 'main',
+                    'Userimport' => 'main,upload,options',
                     
                 ],
                 [
                     'access' => 'user,group',
+                    'navigationComponentId' => null,
                     'icon'   => 'EXT:userimport/Resources/Public/Icons/user_mod_userimport.svg',
                     'labels' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_userimport.xlf',
                 ]
