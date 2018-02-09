@@ -16,10 +16,28 @@ namespace Visol\Userimport\Domain\Model;
 class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
 
+    const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
+    const IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES = 'firstRowContainsFieldNames';
+    const IMPORT_OPTION_USE_EMAIL_AS_USERNAME = 'useEmailAsUsername';
+    const IMPORT_OPTION_GENERATE_PASSWORD = 'generatePassword';
+    const IMPORT_OPTION_USER_GROUPS = 'userGroups';
+    const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
+    const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
+
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
      */
     protected $file = null;
+
+    /**
+     * @var string
+     */
+    protected $importOptions;
+
+    /**
+     * @var string
+     */
+    protected $fieldMapping;
 
     /**
      * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $file
@@ -39,5 +57,64 @@ class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setFile(\TYPO3\CMS\Extbase\Domain\Model\FileReference $file)
     {
         $this->file = $file;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImportOptions(): string
+    {
+        return $this->importOptions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImportOptionsArray(): array
+    {
+        return !empty($this->importOptions) ? unserialize($this->importOptions) : [];
+    }
+
+    /**
+     * @param string $option
+     * @transient
+     *
+     * @return mixed
+     */
+    public function getImportOption($option)
+    {
+        return array_key_exists($option, $this->getImportOptionsArray()) ? $this->getImportOptionsArray()[$option] : null;
+    }
+
+    /**
+     * @param array $importOptions
+     */
+    public function setImportOptions(array $importOptions)
+    {
+        $this->importOptions = serialize($importOptions);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFieldMapping(): string
+    {
+        return $this->fieldMapping;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldMappingArray(): array
+    {
+        return !empty($this->fieldMapping) ? unserialize($this->fieldMapping) : [];
+    }
+
+    /**
+     * @param array $fieldMapping
+     */
+    public function setFieldMapping(array $fieldMapping)
+    {
+        $this->fieldMapping = serialize($fieldMapping);
     }
 }

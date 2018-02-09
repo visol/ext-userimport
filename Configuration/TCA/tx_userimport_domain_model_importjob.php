@@ -3,6 +3,8 @@ if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
 
+$ll = 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:';
+
 $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
     'ctrl' => [
         'title' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:tx_userimport_domain_model_importjob',
@@ -22,26 +24,23 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
                 'userimport'
             ) . 'Resources/Public/Icons/tx_userimport_domain_model_importjob.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden, file',
-    ],
     'types' => [
-        '1' => ['showitem' => 'hidden;;1, file'],
+        '1' => ['showitem' => 'hidden;;1, file, import_options, field_mapping'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
     ],
     'columns' => [
         'hidden' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
             ],
         ],
         'file' => [
-            'exclude' => 1,
-            'label' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:tx_userimport_domain_model_importjob.file',
+            'exclude' => true,
+            'label' => $ll . 'tx_userimport_domain_model_importjob.file',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'file',
                 [
@@ -58,6 +57,24 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
                 ],
                 'xlsx,csv'
             ),
+        ],
+        'import_options' => [
+            'exclude' => true,
+            'label' => $ll . 'tx_userimport_domain_model_importjob.import_options',
+            'config' => [
+                'type' => 'text',
+                'cols' => 60,
+                'rows' => 5,
+            ]
+        ],
+        'field_mapping' => [
+            'exclude' => true,
+            'label' => $ll . 'tx_userimport_domain_model_importjob.field_mapping',
+            'config' => [
+                'type' => 'text',
+                'cols' => 60,
+                'rows' => 5,
+            ]
         ],
     ],
 ];

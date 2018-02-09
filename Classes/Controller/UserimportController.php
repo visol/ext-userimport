@@ -85,7 +85,8 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     /**
      * @param ImportJob $importJob
      */
-    public function optionsAction(ImportJob $importJob) {
+    public function optionsAction(ImportJob $importJob)
+    {
         $this->view->assign('importJob', $importJob);
         $this->view->assign('allowedFolders', $importJob);
 
@@ -97,7 +98,34 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 
         $this->view->assign('frontendUserFolders', $this->tcaService->getFrontendUserFolders());
         $this->view->assign('frontendUserGroups', $this->tcaService->getFrontendUserGroups());
-        $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableFieldNames());
+        $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableUniqueFieldNames());
     }
 
+    /**
+     * @param ImportJob $importJob
+     */
+    public function fieldMappingAction(ImportJob $importJob) {
+        // Update ImportJob with options
+        $fieldOptionArguments = [
+            ImportJob::IMPORT_OPTION_TARGET_FOLDER,
+            ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES,
+            ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME,
+            ImportJob::IMPORT_OPTION_GENERATE_PASSWORD,
+            ImportJob::IMPORT_OPTION_USER_GROUPS,
+            ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS,
+            ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD
+        ];
+        $fieldOptionsArray = [];
+        foreach ($fieldOptionArguments as $argumentName) {
+            $fieldOptionsArray[$argumentName] = $this->request->getArgument($argumentName);
+        }
+        $importJob->setImportOptions($fieldOptionsArray);
+        $this->importJobRepository->update($importJob);
+        $this->persistenceManager->persistAll();
+
+        // Generate data for field mapping
+        $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableFieldNames());
+        $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
+        $this->view->assign('columnLabelsAndExamples', $this->spreadsheetService->getColumnLabelsAndExamples($fileName, $importJob->getImportOption(ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES)));
+    }
 }

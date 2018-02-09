@@ -66,6 +66,24 @@
 			<trans-unit id="importOptionsSubmit.label">
 				<source>Continue</source>
 			</trans-unit>
+			<trans-unit id="fieldMapping.header">
+				<source>Field Mapping</source>
+			</trans-unit>
+			<trans-unit id="fieldMapping.tableHeader.column">
+				<source>Column</source>
+			</trans-unit>
+			<trans-unit id="fieldMapping.tableHeader.feUserMapping">
+				<source>Field mapping</source>
+			</trans-unit>
+			<trans-unit id="fieldMapping.tableHeader.examples">
+				<source>Examples</source>
+			</trans-unit>
+			<trans-unit id="fieldMapping.feUserMapping.placeholder">
+				<source>Map to field...</source>
+			</trans-unit>
+			<trans-unit id="fieldMappingSubmit.label">
+				<source>Continue</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

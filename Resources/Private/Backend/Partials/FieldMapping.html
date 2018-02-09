@@ -1,0 +1,51 @@
+<f:if condition="{columnLabelsAndExamples}">
+    <h2>
+        <f:translate key="fieldMapping.header"/>
+    </h2>
+    <f:form action="importPreview" name="fieldMapping" arguments="{importJob:importJob}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>
+                    {f:translate(key:'fieldMapping.tableHeader.column')}
+                </th>
+                <th>
+                    {f:translate(key:'fieldMapping.tableHeader.feUserMapping')}
+                </th>
+                <th>
+                    {f:translate(key:'fieldMapping.tableHeader.examples')}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{columnLabelsAndExamples}" as="labelAndExamples">
+                <tr>
+                    <td>{labelAndExamples.label}</td>
+                    <td>
+                        <div class="form-group">
+                            <f:form.select name="fieldMapping[{labelAndExamples.index}]" class="form-control"
+                                           options="{frontendUserTableFieldNames}"
+                                           optionValueField="value"
+                                           optionLabelField="label"
+                                           sortByOptionLabel="true"
+                                           prependOptionLabel="{f:translate(key: 'fieldMapping.feUserMapping.placeholder')}"
+                                           prependOptionValue=""/>
+                            <br/>
+                        </div>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <f:for each="{labelAndExamples.examples}" as="example">
+                                <li>{example}</li>
+                            </f:for>
+                        </ul>
+                    </td>
+                </tr>
+            </f:for>
+        </table>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">{f:translate(key: 'importOptionsSubmit.label')}</button>
+        </div>
+    </f:form>
+</f:if>
+

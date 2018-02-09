@@ -15,6 +15,7 @@ namespace Visol\Userimport\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -22,6 +23,8 @@ class TcaService implements SingletonInterface
 {
 
     /**
+     * Return all pages of type folder containing frontend users
+     *
      * @return array
      */
     public function getFrontendUserFolders()
@@ -42,6 +45,8 @@ class TcaService implements SingletonInterface
     }
 
     /**
+     * Return all frontend user groups
+     *
      * @return array
      */
     public function getFrontendUserGroups()
@@ -56,7 +61,12 @@ class TcaService implements SingletonInterface
         return $result;
     }
 
-    public function getFrontendUserTableFieldNames()
+    /**
+     * Return an array with all fields we can use for a unique check
+     *
+     * @return array
+     */
+    public function getFrontendUserTableUniqueFieldNames()
     {
         // TODO: In rs_userimp, this could be configured in the extension configuration
         return [
@@ -73,5 +83,33 @@ class TcaService implements SingletonInterface
                 'label' => 'email'
             ]
         ];
+    }
+
+    /**
+     * Return an array with all fields we can import to
+     *
+     * @return array
+     */
+    public function getFrontendUserTableFieldNames()
+    {
+        /** @var QueryGenerator $queryGenerator */
+        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
+        $queryGenerator->table = 'fe_users';
+
+        $fieldsToExclude = ['image', 'TSconfig', 'lastlogin', 'felogin_forgotHash', 'uid', 'pid', 'deleted', 'tstamp', 'crdate', 'cruser_id'];
+
+        $fieldList = $queryGenerator->makeFieldList();
+        $fieldArray = [];
+        foreach (GeneralUtility::trimExplode(',', $fieldList) as $fieldName) {
+            if (in_array($fieldName, $fieldsToExclude)) {
+                // Ignore senseless or dangerous fields
+                continue;
+            }
+            $fieldArray[] = [
+                'label' => $fieldName,
+                'value' => $fieldName
+            ];
+        }
+        return $fieldArray;
     }
 }

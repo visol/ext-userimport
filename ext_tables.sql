@@ -13,6 +13,8 @@ CREATE TABLE tx_userimport_domain_model_importjob (
 	hidden smallint(5) unsigned DEFAULT '0' NOT NULL,
 
 	file int(11) unsigned DEFAULT '0',
+	import_options text,
+	field_mapping text,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

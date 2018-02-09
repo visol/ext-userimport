@@ -13,7 +13,7 @@ call_user_func(
                 'userimport', // Submodule key
                 '', // Position
                 [
-                    'Userimport' => 'main,upload,options',
+                    'Userimport' => 'main,upload,options,fieldMapping',
                     
                 ],
                 [
