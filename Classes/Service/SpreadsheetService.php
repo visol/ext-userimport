@@ -13,9 +13,17 @@ namespace Visol\Userimport\Service;
  *
  ***/
 
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Impexp\Import;
+use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
+use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
+use Visol\Userimport\Domain\Model\ImportJob;
 
 class SpreadsheetService implements SingletonInterface
 {
@@ -105,9 +113,92 @@ class SpreadsheetService implements SingletonInterface
             }
         }
 
-        \TYPO3\CMS\Core\Utility\DebugUtility::debug($columns);
-
         return $columns;
+    }
+
+    /**
+     * Generate data from import job data and configuration
+     *
+     * @param ImportJob $importJob
+     * @param bool $isPreview
+     *
+     * @return array
+     */
+    public function generateDataFromImportJob(ImportJob $importJob, $isPreview = false)
+    {
+        $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
+        $spreadsheet = $this->getSpreadsheet($fileName);
+        // We always use the first sheet only
+        $worksheet = $spreadsheet->getSheet(0);
+
+        // Remove non-assigned columns from field mapping
+        $fieldMapping = array_filter($importJob->getFieldMappingArray());
+
+        $i = 0;
+        $rows = [];
+
+        foreach ($worksheet->getRowIterator() as $rowIndex => $spreadsheetRow) {
+            if ($i === 0 && $importJob->getImportOption(ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES)) {
+                $i++;
+                continue;
+            }
+            $row = [];
+            foreach ($fieldMapping as $columnIndex => $fieldName) {
+                $row[$fieldName] = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
+            }
+
+            if (!array_filter($row)) {
+                // Don't further-process non-empty rows
+                continue;
+            }
+            $rows[$i] = $row;
+
+            // Process import options
+            if ((bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME)) {
+                $rows[$i]['username'] = $rows[$i]['email'];
+            }
+
+            if ($isPreview) {
+                // Rows for preview mode
+                $rows[$i]['password'] = '********';
+            } else {
+                // Rows for actual import
+
+                // Safe password
+                if (empty($rows[$i]['password'])) {
+                    // TODO respect option or remove option if we always want a password
+                    // Password was not mapped, so we create one
+                    /** @var Random $random */
+                    $random = GeneralUtility::makeInstance(Random::class);
+                    $rows[$i]['password'] = $random->generateRandomBytes(32);
+                }
+
+                // MD5 as fallback
+                $saltedPassword = md5($rows[$i]['password']);
+                // Create salted password
+                if (ExtensionManagementUtility::isLoaded('saltedpasswords')) {
+                    if (SaltedPasswordsUtility::isUsageEnabled('FE')) {
+                        $objSalt = SaltFactory::getSaltingInstance(null);
+                        if (is_object($objSalt)) {
+                            $saltedPassword = $objSalt->getHashedPassword($rows[$i]['password']);
+                        }
+                    }
+                }
+                $rows[$i]['password'] = $saltedPassword;
+
+                // PID
+                $rows[$i]['pid'] = (int)$importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
+
+                // User groups
+                if (!empty($importJob->getImportOption(ImportJob::IMPORT_OPTION_USER_GROUPS))) {
+                    $rows[$i]['usergroup'] = implode(',', $importJob->getImportOption(ImportJob::IMPORT_OPTION_USER_GROUPS));
+                };
+            }
+
+            $i++;
+        }
+
+        return array_values($rows);
     }
 
     /**

@@ -1,0 +1,28 @@
+<f:if condition="{previewData}">
+    <h2>
+        <f:translate key="importPreview.header"/>
+    </h2>
+    <f:form action="performImport" name="importPreview" arguments="{importJob:importJob}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <f:for each="{previewDataHeader}" as="label">
+                    <th>{label}</th>
+                </f:for>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{previewData}" as="row">
+                <tr>
+                    <f:for each="{row}" as="field">
+                        <td>{field}</td>
+                    </f:for>
+                </tr>
+            </f:for>
+        </table>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">{f:translate(key: 'importPreviewSubmit.label')}</button>
+        </div>
+    </f:form>
+</f:if>
+

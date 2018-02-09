@@ -84,6 +84,12 @@
 			<trans-unit id="fieldMappingSubmit.label">
 				<source>Continue</source>
 			</trans-unit>
+			<trans-unit id="importPreview.header">
+				<source>Import Preview</source>
+			</trans-unit>
+			<trans-unit id="importPreviewSubmit.label">
+				<source>Import data</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -105,6 +105,8 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
      * @param ImportJob $importJob
      */
     public function fieldMappingAction(ImportJob $importJob) {
+        $this->view->assign('importJob', $importJob);
+
         // Update ImportJob with options
         $fieldOptionArguments = [
             ImportJob::IMPORT_OPTION_TARGET_FOLDER,
@@ -127,5 +129,22 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableFieldNames());
         $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
         $this->view->assign('columnLabelsAndExamples', $this->spreadsheetService->getColumnLabelsAndExamples($fileName, $importJob->getImportOption(ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES)));
+    }
+
+    /**
+     * @param ImportJob $importJob
+     * @param array $fieldMapping
+     */
+    public function importPreviewAction(ImportJob $importJob, array $fieldMapping)
+    {
+        // Update ImportJob with field mapping
+        $importJob->setFieldMapping($fieldMapping);
+        $this->importJobRepository->update($importJob);
+        $this->persistenceManager->persistAll();
+
+        $previewData = $this->spreadsheetService->generateDataFromImportJob($importJob, true);
+        $this->view->assign('previewDataHeader', array_keys($previewData[0]));
+        $this->view->assign('previewData', $previewData);
+
     }
 }
