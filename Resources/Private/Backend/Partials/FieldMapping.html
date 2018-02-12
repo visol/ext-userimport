@@ -4,6 +4,7 @@
     </h2>
     <f:form action="importPreview" name="fieldMapping" arguments="{importJob:importJob}">
         <f:render partial="ValidationResults"/>
+        <f:render partial="ClientSideValidationResults"/>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -24,7 +25,8 @@
                     <td class="align-top">{labelAndExamples.label}</td>
                     <td class="align-top">
                         <div class="form-group mb-0">
-                            <f:form.select name="fieldMapping[{labelAndExamples.index}]" class="form-control"
+                            <f:form.select name="fieldMapping[{labelAndExamples.index}]"
+                                           class="form-control userimport-fieldmapping"
                                            options="{frontendUserTableFieldNames}"
                                            optionValueField="value"
                                            optionLabelField="label"
@@ -48,5 +50,16 @@
             <button type="submit" class="btn btn-primary">{f:translate(key: 'importOptionsSubmit.label')}</button>
         </div>
     </f:form>
-</f:if>
 
+    <script>
+        if (typeof Userimport !== 'object') {
+            window.Userimport = {}
+        }
+
+        Userimport.usernameMustBeMapped = '{usernameMustBeMapped}';
+        Userimport.usernameMustBeMappedValidation = "{f:translate(key: 'fieldMapping.validation.usernameMustBeMapped')}";
+        Userimport.emailMustBeMapped = '{emailMustBeMapped}';
+        Userimport.emailMustBeMappedValidation = "{f:translate(key: 'fieldMapping.validation.emailMustBeMapped')}";
+    </script>
+
+</f:if>

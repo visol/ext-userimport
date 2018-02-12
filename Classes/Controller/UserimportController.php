@@ -140,6 +140,14 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
                 $importJob->getImportOption(ImportJob::IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES)
             )
         );
+
+        // If username is not generated from e-mail, the field must be mapped
+        $usernameMustBeMapped = !(bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        $this->view->assign('usernameMustBeMapped', $usernameMustBeMapped);
+
+        // If username is generated from e-mail, the field e-mail must be mapped
+        $emailMustBeMapped = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        $this->view->assign('emailMustBeMapped', $emailMustBeMapped);
     }
 
     /**

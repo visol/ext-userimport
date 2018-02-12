@@ -61,7 +61,7 @@
 				<source>Field to check for update</source>
 			</trans-unit>
 			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.help">
-				<source>The field to check if a user must be updated.</source>
+				<source>If a record having the same value in the selected field is found, it is updated instead of inserted.</source>
 			</trans-unit>
 			<trans-unit id="importOptionsSubmit.label">
 				<source>Continue</source>
@@ -80,6 +80,12 @@
 			</trans-unit>
 			<trans-unit id="fieldMapping.feUserMapping.placeholder">
 				<source>Map to field...</source>
+			</trans-unit>
+			<trans-unit id="fieldMapping.validation.usernameMustBeMapped">
+				<source>The username field must be mapped.</source>
+			</trans-unit>
+			<trans-unit id="fieldMapping.validation.emailMustBeMapped">
+				<source>The e-mail field must be mapped because the username is generated from it.</source>
 			</trans-unit>
 			<trans-unit id="fieldMappingSubmit.label">
 				<source>Continue</source>
