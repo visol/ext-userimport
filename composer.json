@@ -1,13 +1,14 @@
 {
     "name": "visol/userimport",
     "type": "typo3-cms-extension",
-    "description": "Imports Excel or CSV data as Frontend Users",
+    "description": "TYPO3 package to imports Excel or CSV data as Frontend Users",
     "authors": [
         {
             "name": "Lorenz Ulrich",
             "role": "Developer"
         }
     ],
+    "license": ["GPL-2.0-or-later"],
     "require": {
         "typo3/cms-core": "^8.7.1",
         "phpoffice/phpspreadsheet": "^1.1.0"
