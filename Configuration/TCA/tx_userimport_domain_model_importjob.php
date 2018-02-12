@@ -7,6 +7,7 @@ $ll = 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:';
 
 $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
     'ctrl' => [
+        'hideTable' => true,
         'title' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:tx_userimport_domain_model_importjob',
         'label' => 'title',
         'tstamp' => 'tstamp',
