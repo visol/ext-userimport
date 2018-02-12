@@ -3,9 +3,23 @@
 <f:layout name="Default"/>
 
 <f:section name="content">
+    <h2>
+        <f:translate key="performImport.header"/>
+    </h2>
     <div class="alert alert-info" role="alert">
-        {f:translate(key: 'performImport.rowsInSource', arguments: {0: rowsInSource})}<br />
-        {f:translate(key: 'performImport.updatedRecords', arguments: {0: updatedRecords})}<br />
+        {f:translate(key: 'performImport.rowsInSource', arguments: {0: rowsInSource})}<br/>
+        {f:translate(key: 'performImport.updatedRecords', arguments: {0: updatedRecords})}<br/>
         {f:translate(key: 'performImport.insertedRecords', arguments: {0: insertedRecords})}
     </div>
+    <f:if condition="{log}">
+        <div class="alert alert-light" role="alert">
+            <ul class="list-unstyled">
+                <f:for each="{log}" as="entry">
+                    <li>
+                        <f:translate key="performImport.{entry.action}" arguments="{0: entry.row}" />
+                    </li>
+                </f:for>
+            </ul>
+        </div>
+    </f:if>
 </f:section>

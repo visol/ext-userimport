@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use Visol\Userimport\Domain\Model\ImportJob;
 use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
+use Visol\Userimport\Utility\FormattingUtility;
 
 /**
  * UserimportController
@@ -177,38 +178,86 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $updatedRecords = 0;
         $insertedRecords = 0;
 
+        $log = [];
+
+        $feUsersConnection = $connectionPool->getConnectionForTable('fe_users');
+
         foreach ($rowsToImport as $row) {
+            $rowForLog = FormattingUtility::formatRowForImportLog($row);
+
             if ($updateExisting) {
+                $targetFolder = (int)$importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
                 $updateExistingUniqueField = $importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD);
-                $existing = $queryBuilder
-                    ->count('uid')
-                    ->from('fe_users', null)
-                    ->where(
-                        $queryBuilder->expr()->eq($updateExistingUniqueField, $queryBuilder->createNamedParameter($row[$updateExistingUniqueField]))
-                    )
-                    ->execute()
-                    ->fetchColumn(0);
-                if ($existing) {
-                    $feUsersConnection = $connectionPool->getConnectionForTable('fe_users');
-                    $updatedRecords += $feUsersConnection->update(
+                $existing = $feUsersConnection->count(
+                    'uid',
+                    'fe_users',
+                    [
+                        $updateExistingUniqueField => $row[$updateExistingUniqueField],
+                        'pid' => $targetFolder,
+                        'deleted' => 0,
+                        'disable' => 0
+                    ]
+                );
+                if ($existing > 0) {
+                    $affectedRecords = $feUsersConnection->update(
                         'fe_users',
                         $row,
-                        [$updateExistingUniqueField => $row[$updateExistingUniqueField]]
+                        [
+                            $updateExistingUniqueField => $row[$updateExistingUniqueField],
+                            'pid' => $targetFolder,
+                            'deleted' => 0,
+                            'disable' => 0
+                        ]
                     );
+
+                    if ($affectedRecords < 1) {
+                        // Error case
+                        $log[] = [
+                            'action' => 'update.fail',
+                            'row' => $rowForLog
+                        ];
+                    } else {
+                        $log[] = [
+                            'action' => 'update.success',
+                            'row' => $rowForLog
+                        ];
+                    }
+
+                    $updatedRecords += $affectedRecords;
 
                     continue;
                 }
             }
             // Must be newly imported
-            $insertedRecords += $queryBuilder
+            $affectedRecords = $queryBuilder
                 ->insert('fe_users', null)
                 ->values($row)
                 ->execute();
+
+            if ($affectedRecords < 1) {
+                // Error case
+                $log[] = [
+                    'action' => 'insert.fail',
+                    'row' => $rowForLog
+                ];
+            } else {
+                $log[] = [
+                    'action' => 'insert.success',
+                    'row' => $rowForLog
+                ];
+            }
+            $insertedRecords += $affectedRecords;
+
             continue;
         }
 
         $this->view->assign('updatedRecords', $updatedRecords);
         $this->view->assign('insertedRecords', $insertedRecords);
+        $this->view->assign('log', $log);
+
+        // Remove import job
+        $this->importJobRepository->remove($importJob);
+        $this->persistenceManager->persistAll();
     }
 
     /**

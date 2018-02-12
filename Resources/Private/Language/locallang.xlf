@@ -94,16 +94,28 @@
 				<source>Import log</source>
 			</trans-unit>
 			<trans-unit id="performImport.rowsInSource">
-				<source>%s rows in source file</source>
+				<source>%s rows in source file.</source>
 			</trans-unit>
 			<trans-unit id="performImport.insertedRecords">
-				<source>%s records imported</source>
+				<source>%s records inserted.</source>
 			</trans-unit>
 			<trans-unit id="performImport.updatedRecords">
-				<source>%s records updated</source>
+				<source>%s records updated.</source>
 			</trans-unit>
 			<trans-unit id="error.1399312430">
 				<source>File extension not allowed. Allowed file types: xlsx, csv</source>
+			</trans-unit>
+			<trans-unit id="performImport.update.fail">
+				<source>Update failed for: %s</source>
+			</trans-unit>
+			<trans-unit id="performImport.update.success">
+				<source>Update successful for: %s</source>
+			</trans-unit>
+			<trans-unit id="performImport.insert.fail">
+				<source>Insert failed for: %s</source>
+			</trans-unit>
+			<trans-unit id="performImport.insert.success">
+				<source>Insert successful for: %s</source>
 			</trans-unit>
 		</body>
 	</file>
