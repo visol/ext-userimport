@@ -14,7 +14,7 @@ namespace Visol\Userimport\Utility;
  ***/
 
 
-class FormattingUtility
+class LogUtility
 {
 
     /**

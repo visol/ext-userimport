@@ -13,13 +13,10 @@ namespace Visol\Userimport\Controller;
  *
  ***/
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use Visol\Userimport\Domain\Model\ImportJob;
 use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
-use Visol\Userimport\Utility\FormattingUtility;
 
 /**
  * UserimportController
@@ -46,6 +43,12 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     protected $spreadsheetService = null;
 
     /**
+     * @var \Visol\Userimport\Service\UserImportService
+     * @inject
+     */
+    protected $userImportService = null;
+
+    /**
      * @var \Visol\Userimport\Service\TcaService
      * @inject
      */
@@ -62,11 +65,12 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 
     protected function initializeUploadAction()
     {
+        /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
         $propertyMappingConfiguration = $this->arguments['importJob']->getPropertyMappingConfiguration();
         $uploadConfiguration = [
             UploadedFileReferenceConverter::CONFIGURATION_ALLOWED_FILE_EXTENSIONS => 'xlsx,csv'
         ];
-        $propertyMappingConfiguration->allowAllProperties();
+        $propertyMappingConfiguration->allowProperties('file');
         $propertyMappingConfiguration->forProperty('file')
             ->setTypeConverterOptions(
                 UploadedFileReferenceConverter::class,
@@ -92,7 +96,6 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     public function optionsAction(ImportJob $importJob)
     {
         $this->view->assign('importJob', $importJob);
-        $this->view->assign('allowedFolders', $importJob);
 
         if ($importJob->getFile() instanceof FileReference) {
             $fileName = $importJob->getFile()->getOriginalResource()->getForLocalProcessing();
@@ -176,92 +179,12 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $rowsToImport = $this->spreadsheetService->generateDataFromImportJob($importJob);
         $this->view->assign('rowsInSource', count($rowsToImport));
 
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('fe_users');
+        $result = $this->userImportService->performImport($rowsToImport, $importJob);
 
-        $updateExisting = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS);
 
-        $updatedRecords = 0;
-        $insertedRecords = 0;
-
-        $log = [];
-
-        $feUsersConnection = $connectionPool->getConnectionForTable('fe_users');
-
-        foreach ($rowsToImport as $row) {
-            $rowForLog = FormattingUtility::formatRowForImportLog($row);
-
-            if ($updateExisting) {
-                $targetFolder = (int)$importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
-                $updateExistingUniqueField = $importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD);
-                $existing = $feUsersConnection->count(
-                    'uid',
-                    'fe_users',
-                    [
-                        $updateExistingUniqueField => $row[$updateExistingUniqueField],
-                        'pid' => $targetFolder,
-                        'deleted' => 0,
-                        'disable' => 0
-                    ]
-                );
-                if ($existing > 0) {
-                    $affectedRecords = $feUsersConnection->update(
-                        'fe_users',
-                        $row,
-                        [
-                            $updateExistingUniqueField => $row[$updateExistingUniqueField],
-                            'pid' => $targetFolder,
-                            'deleted' => 0,
-                            'disable' => 0
-                        ]
-                    );
-
-                    if ($affectedRecords < 1) {
-                        // Error case
-                        $log[] = [
-                            'action' => 'update.fail',
-                            'row' => $rowForLog
-                        ];
-                    } else {
-                        $log[] = [
-                            'action' => 'update.success',
-                            'row' => $rowForLog
-                        ];
-                    }
-
-                    $updatedRecords += $affectedRecords;
-
-                    continue;
-                }
-            }
-            // Must be newly imported
-            $affectedRecords = $queryBuilder
-                ->insert('fe_users', null)
-                ->values($row)
-                ->execute();
-
-            if ($affectedRecords < 1) {
-                // Error case
-                $log[] = [
-                    'action' => 'insert.fail',
-                    'row' => $rowForLog
-                ];
-            } else {
-                $log[] = [
-                    'action' => 'insert.success',
-                    'row' => $rowForLog
-                ];
-            }
-            $insertedRecords += $affectedRecords;
-
-            continue;
-        }
-
-        $this->view->assign('updatedRecords', $updatedRecords);
-        $this->view->assign('insertedRecords', $insertedRecords);
-        $this->view->assign('log', $log);
+        $this->view->assign('updatedRecords', $result['updatedRecords']);
+        $this->view->assign('insertedRecords', $result['insertedRecords']);
+        $this->view->assign('log', $result['log']);
 
         // Remove import job
         $this->importJobRepository->remove($importJob);

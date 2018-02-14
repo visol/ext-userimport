@@ -176,12 +176,10 @@ class SpreadsheetService implements SingletonInterface
                 // MD5 as fallback
                 $saltedPassword = md5($rows[$i]['password']);
                 // Create salted password
-                if (ExtensionManagementUtility::isLoaded('saltedpasswords')) {
-                    if (SaltedPasswordsUtility::isUsageEnabled('FE')) {
-                        $objSalt = SaltFactory::getSaltingInstance(null);
-                        if (is_object($objSalt)) {
-                            $saltedPassword = $objSalt->getHashedPassword($rows[$i]['password']);
-                        }
+                if (ExtensionManagementUtility::isLoaded('saltedpasswords') && SaltedPasswordsUtility::isUsageEnabled('FE')) {
+                    $objSalt = SaltFactory::getSaltingInstance(null);
+                    if (is_object($objSalt)) {
+                        $saltedPassword = $objSalt->getHashedPassword($rows[$i]['password']);
                     }
                 }
                 $rows[$i]['password'] = $saltedPassword;
@@ -206,12 +204,11 @@ class SpreadsheetService implements SingletonInterface
     }
 
     /**
-     * @param $fileName
+     * @param string $fileName
      *
      * @return Spreadsheet
      */
-    protected function getSpreadsheet($fileName)
-    {
+    protected function getSpreadsheet($fileName) {
         return IOFactory::load($fileName);
     }
 }

@@ -1,4 +1,4 @@
-{namespace vi=Visol\Userimport\ViewHelpers}
+{namespace userimport=Visol\Userimport\ViewHelpers}
 
 <f:layout name="Default"/>
 
@@ -7,7 +7,7 @@
         <f:render partial="ValidationResults"/>
         <div class="form-group">
             <label for="file">{f:translate(key: 'uploadFile.label')}</label>
-            <vi:form.upload id="file" property="file" class="form-control-file" additionalAttributes="{required: 'true'}"/>
+            <userimport:form.upload id="file" property="file" class="form-control-file" additionalAttributes="{required: 'true'}"/>
             <small class="form-text text-muted">{f:translate(key: 'uploadFile.help')}</small>
         </div>
         <button type="submit" class="btn btn-primary">{f:translate(key: 'uploadSubmit.label')}</button>

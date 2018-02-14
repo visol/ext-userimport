@@ -38,6 +38,8 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 
 /**
  * Class UploadedFileReferenceConverter
+ *
+ * Source: https://github.com/helhum/upload_example/
  */
 class UploadedFileReferenceConverter extends AbstractTypeConverter
 {
