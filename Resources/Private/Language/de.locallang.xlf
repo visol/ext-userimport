@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-09T11:23:13Z" product-name="userimport">
+		<header/>
+		<body>
+			<trans-unit id="moduleTitle">
+				<target>Benutzer-Import</target>
+			</trans-unit>
+			<trans-unit id="uploadFile.label">
+				<target>Datei auswählen</target>
+			</trans-unit>
+			<trans-unit id="uploadFile.help">
+				<target>Erlaubte Datei-Typen sind: xlsx, csv</target>
+			</trans-unit>
+			<trans-unit id="uploadSubmit.label">
+				<target>Hochladen</target>
+			</trans-unit>
+			<trans-unit id="spreadsheetPreview.header">
+				<target>Vorschau (Datei: %s)</target>
+			</trans-unit>
+			<trans-unit id="spreadsheetPreview.help">
+				<target>Es werden nur die ersten 5 Zeilen dargestellt.</target>
+			</trans-unit>
+			<trans-unit id="importOptions.header">
+				<target>Import-Optionen</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.firstRowContainsFieldNames.label">
+				<target>Erste Zeile enthält Spaltennamen</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.firstRowContainsFieldNames.help">
+				<target>Falls gewählt, wird die erste Zeile beim Import ignoriert.</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.targetFolder.label">
+				<target>Ziel-Ordner</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.userGroups.label">
+				<target>Benutzergruppen</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.userGroups.help">
+				<target>Die ausgewählten Benutzergruppen werden den importierten Benutzern zugewiesen.</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.useEmailAsUsername.label">
+				<target>E-Mail-Spalte als Benutzername verwenden</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.useEmailAsUsername.help">
+				<target>Der Wert der Spalte E-Mail wird als Benutzername verwendet.</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.generatePassword.label">
+				<target>Kennwort generieren</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.generatePassword.help">
+				<target>Ein zufälliges Kennwort wird für importierte Benutzer generiert. Alternativ kann das Kennwort auch importiert werden.</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsers.label">
+				<target>Bestehende Benutzer aktualisieren</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsers.help">
+				<target>Anstatt neue Benutzer hinzuzufügen, werden bestehende Benutzer aktualisiert.</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.label">
+				<target>Feld für Aktualisierungs-Prüfung</target>
+			</trans-unit>
+			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.help">
+				<target>Ein Benutzer wird dann aktualisiert, wenn bereits ein Benutzer mit demselben Wert im angegebenen Feld existiert.</target>
+			</trans-unit>
+			<trans-unit id="importOptionsSubmit.label">
+				<target>Weiter</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.header">
+				<target>Feldzuweisung</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.tableHeader.column">
+				<target>Spalte</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.tableHeader.feUserMapping">
+				<target>Feldzuweisung</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.tableHeader.examples">
+				<target>Beispiele</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.feUserMapping.placeholder">
+				<target>Zuweisung zu Feld...</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.validation.usernameMustBeMapped">
+				<target>Das Feld username muss zugewiesen werden.</target>
+			</trans-unit>
+			<trans-unit id="fieldMapping.validation.emailMustBeMapped">
+				<target>Das Feld email muss zugewiesen werden, da daraus der Benutzername generiert wird.</target>
+			</trans-unit>
+			<trans-unit id="fieldMappingSubmit.label">
+				<target>Weiter</target>
+			</trans-unit>
+			<trans-unit id="importPreview.header">
+				<target>Import-Vorschau</target>
+			</trans-unit>
+			<trans-unit id="importPreviewSubmit.label">
+				<target>Daten importieren</target>
+			</trans-unit>
+			<trans-unit id="performImport.header">
+				<target>Import-Log</target>
+			</trans-unit>
+			<trans-unit id="performImport.rowsInSource">
+				<target>%s Zeilen in der hochgeladenen Datei.</target>
+			</trans-unit>
+			<trans-unit id="performImport.insertedRecords">
+				<target>%s Datensätze importiert.</target>
+			</trans-unit>
+			<trans-unit id="performImport.updatedRecords">
+				<target>%s Datensätze aktualisiert.</target>
+			</trans-unit>
+			<trans-unit id="error.1399312430">
+				<target>Datei-Typ nicht erlaubt. Erlaubte Datei-Typen: xlsx, csv</target>
+			</trans-unit>
+			<trans-unit id="performImport.update.fail">
+				<target>Aktualisierung fehlgeschlagen für: %s</target>
+			</trans-unit>
+			<trans-unit id="performImport.update.moreThanOneRecordFound">
+				<target>Aktualisierung fehlgeschlagen für: %s (Grund: Mehr als ein identischer Datensatz für die Aktualisierung gefunden.)</target>
+			</trans-unit>
+			<trans-unit id="performImport.update.success">
+				<target>Aktualisierung erfolgreich für: %s</target>
+			</trans-unit>
+			<trans-unit id="performImport.insert.fail">
+				<target>Import fehlgeschlagen für: %s</target>
+			</trans-unit>
+			<trans-unit id="performImport.insert.success">
+				<target>Import erfolgreich für: %s</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
