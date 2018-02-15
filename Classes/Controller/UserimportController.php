@@ -186,6 +186,8 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $this->view->assign('insertedRecords', $result['insertedRecords']);
         $this->view->assign('log', $result['log']);
 
+        $this->view->assign('targetFolder', $importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER));
+
         // Remove import job
         $this->importJobRepository->remove($importJob);
         $this->persistenceManager->persistAll();

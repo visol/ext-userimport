@@ -126,6 +126,9 @@
 			<trans-unit id="performImport.insert.success">
 				<source>Insert successful for: %s</source>
 			</trans-unit>
+			<trans-unit id="performImport.goToTargetFolder">
+				<source>Go to target folder</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
