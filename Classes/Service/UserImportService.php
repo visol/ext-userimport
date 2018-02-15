@@ -90,7 +90,7 @@ class UserImportService implements SingletonInterface
                     $updatedRecords += $affectedRecords;
 
                     continue;
-                } else {
+                } elseif ($existing > 1) {
                     // More than one record, fail
                     $log[] = [
                         'action' => 'update.moreThanOneRecordFound',
