@@ -13,6 +13,7 @@ namespace Visol\Userimport\Service;
  *
  ***/
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\QueryGenerator;
@@ -39,9 +40,25 @@ class TcaService implements SingletonInterface
                 $queryBuilder->expr()->eq('doktype', 254),
                 $queryBuilder->expr()->eq('module', $queryBuilder->createNamedParameter('fe_users', \PDO::PARAM_STR))
             )
+            ->addOrderBy('uid', 'DESC')
             ->execute()
             ->fetchAll();
-        return $result;
+
+        $folders = [];
+
+        foreach ($result as $page) {
+            $pageRecord = BackendUtility::readPageAccess($page['uid'], $GLOBALS['BE_USER']->getPagePermsClause(1));
+            $title = '';
+            if ($pageRecord['uid']) {
+                $title = '[' . $pageRecord['uid'] . '] ' . substr($pageRecord['_thePathFull'], 0, -1);
+            }
+            $folders[] = [
+                'uid' => $page['uid'],
+                'title' => !empty($title) ? $title : $page['title']
+            ];
+        }
+
+        return $folders;
     }
 
     /**
