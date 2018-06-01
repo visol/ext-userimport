@@ -16,6 +16,7 @@ namespace Visol\Userimport\Service;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -133,6 +134,9 @@ class SpreadsheetService implements SingletonInterface
         // Remove non-assigned columns from field mapping
         $fieldMapping = array_filter($importJob->getFieldMappingArray());
 
+        // Get TCAdefaults
+        $tcaDefaultsRow = $this->getTcaDefaultsRow($importJob->getImportOptionsArray()['targetFolder']);
+
         $i = 0;
         $rows = [];
 
@@ -141,7 +145,8 @@ class SpreadsheetService implements SingletonInterface
                 $i++;
                 continue;
             }
-            $row = [];
+            // Use tcaDefaultsRow if not empty
+            $row = empty($tcaDefaultsRow) ? [] : $tcaDefaultsRow;
             foreach ($fieldMapping as $columnIndex => $fieldName) {
                 $value = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
                 $row[$fieldName] = !empty($value) ? $value : '';
@@ -161,6 +166,13 @@ class SpreadsheetService implements SingletonInterface
             if ($isPreview) {
                 // Rows for preview mode
                 $rows[$i]['password'] = '********';
+                // Don't display TCAdefaults in Preview
+                if (!empty($tcaDefaultsRow)) {
+                    $tcaDefaultsKeys = array_keys($tcaDefaultsRow);
+                    foreach ($tcaDefaultsKeys as $fieldName) {
+                        unset($rows[$i][$fieldName]);
+                    }
+                }
             } else {
                 // Rows for actual import
 
@@ -204,11 +216,44 @@ class SpreadsheetService implements SingletonInterface
     }
 
     /**
+     * Creates an array holding values set through TCAdefaults TSConfig
+     * Respects the TSConfig applying to the given page
+     *
+     * @param $targetFolderUid
+     *
+     * @return array
+     */
+    protected function getTcaDefaultsRow($targetFolderUid)
+    {
+        $row = [];
+
+        $pageTsConfig = BackendUtility::getPagesTSconfig($targetFolderUid);
+        if (!is_array($pageTsConfig)) {
+            return $row;
+        }
+
+        $pageTsConfig = GeneralUtility::removeDotsFromTS($pageTsConfig);
+        if (isset($pageTsConfig['TCAdefaults']) && isset($pageTsConfig['TCAdefaults']['fe_users']) && is_array($pageTsConfig['TCAdefaults']['fe_users'])) {
+            $tcaDefaults = $pageTsConfig['TCAdefaults']['fe_users'];
+            foreach ($tcaDefaults as $field => $value) {
+                // Check if field exists
+                if (!isset($GLOBALS['TCA']['fe_users']['columns'][$field])) {
+                    continue;
+                }
+                $row[$field] = $value;
+            }
+        }
+
+        return $row;
+    }
+
+    /**
      * @param string $fileName
      *
      * @return Spreadsheet
      */
-    protected function getSpreadsheet($fileName) {
+    protected function getSpreadsheet($fileName)
+    {
         return IOFactory::load($fileName);
     }
 }
