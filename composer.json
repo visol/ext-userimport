@@ -10,8 +10,8 @@
     ],
     "license": ["GPL-2.0-or-later"],
     "require": {
-        "typo3/cms-core": "^8.7.1",
-        "phpoffice/phpspreadsheet": "^1.1.0"
+        "typo3/cms-core": "^8.7",
+        "phpoffice/phpspreadsheet": "^1.2.0"
     },
     "autoload": {
         "psr-4": {
