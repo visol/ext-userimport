@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
+use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 
 /**
  * Class UploadedFileReferenceConverter
@@ -60,11 +61,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      * with no ObjectStorage annotation.
      */
     const CONFIGURATION_ALLOWED_FILE_EXTENSIONS = 4;
-
-    /**
-     * @var string
-     */
-    protected $defaultUploadFolder = '1:/user_upload/';
 
     /**
      * @var array<string>
@@ -204,7 +200,14 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
             }
         }
 
-        $uploadFolderId = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_UPLOAD_FOLDER) ?: $this->defaultUploadFolder;
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
+        $configurationUtility = $objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+        $moduleConfiguration = $configurationUtility->getCurrentConfiguration('userimport');
+        $uploadStorageFolder = $moduleConfiguration['uploadStorageFolder']['value'] != '' ? $moduleConfiguration['uploadStorageFolder']['value'] : $moduleConfiguration['uploadStorageFolder']['default_value'];
+
+        $uploadFolderId = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_UPLOAD_FOLDER) ?: $uploadStorageFolder;
         $defaultConflictMode = \TYPO3\CMS\Core\Resource\DuplicationBehavior::RENAME;
         $conflictMode = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_UPLOAD_CONFLICT_MODE) ?: $defaultConflictMode;
 
