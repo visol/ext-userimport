@@ -205,7 +205,12 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
         $configurationUtility = $objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
         $moduleConfiguration = $configurationUtility->getCurrentConfiguration('userimport');
-        $uploadStorageFolder =  !empty($moduleConfiguration['uploadStorageFolder']['value']) ? $moduleConfiguration['uploadStorageFolder']['value'] : $moduleConfiguration['uploadStorageFolder']['default_value'];
+
+        if (!empty($moduleConfiguration['uploadStorageFolder']['value'])) {
+            $uploadStorageFolder = $moduleConfiguration['uploadStorageFolder']['value'];
+        } else {
+            throw new \Exception('You must configure an upload folder in the Extension Manager configuration.', 1643747930);
+        }
 
         $uploadFolderId = $configuration->getConfigurationValue(UploadedFileReferenceConverter::class, self::CONFIGURATION_UPLOAD_FOLDER) ?: $uploadStorageFolder;
         $defaultConflictMode = \TYPO3\CMS\Core\Resource\DuplicationBehavior::RENAME;

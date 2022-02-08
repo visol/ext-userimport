@@ -13,11 +13,11 @@ Make sure to upload your files containing user data to a secure folder!
 
 ### Add your storage folder to the module configuration
 
-Module configuration in this Extension Manager.
+Module configuration in the Extension Manager.
 
 ![Modul configuration](modulesettings.png)
 
-Make sure to match the id to your previously created storage folder.
+Make sure to match the id of your previously created storage folder.
 
 Example entry: `<uid-of-your-protected-storage>:/<subfolder>/`
 

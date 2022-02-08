@@ -1,2 +1,2 @@
-# cat=modules//; type=string; label= Path to (protected) upload folder. : Example '3:/user_upload/userimport/' where the id (3) has to match the uid of your (protected) storage record and the path is relative to the storage folder selected.
-uploadStorageFolder = 3:/user_upload/userimport/
+# cat=modules//; type=string; label= Path to (protected) upload folder. : Example 'N:/user_upload/userimport/' where the id (N) has to match the uid of your (protected) storage record and the path is relative to the storage folder selected.
+uploadStorageFolder =
