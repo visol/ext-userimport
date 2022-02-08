@@ -60,6 +60,13 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     public function mainAction()
     {
         $importJob = $this->objectManager->get(ImportJob::class);
+
+        $configurationUtility = $this->objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
+        $moduleConfiguration = $configurationUtility->getCurrentConfiguration('userimport');
+        if (!empty($moduleConfiguration['uploadStorageFolder']['value'])) {
+            $this->view->assign('uploadStorageFolder', $moduleConfiguration['uploadStorageFolder']['value']);
+        }
+
         $this->view->assign('importJob', $importJob);
     }
 

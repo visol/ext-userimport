@@ -9,6 +9,15 @@
 			<trans-unit id="uploadFile.label">
 				<source>Select file</source>
 			</trans-unit>
+			<trans-unit id="uploadStorageFolder.label">
+				<source>Upload folder</source>
+			</trans-unit>
+			<trans-unit id="uploadStorageFolder.missing">
+				<source>You must configure an upload folder in the Extension Manager configuration. See README for more details.</source>
+			</trans-unit>
+			<trans-unit id="seeExtensionManager.help">
+				<target>(See extension manager)</target>
+			</trans-unit>
 			<trans-unit id="uploadFile.help">
 				<source>Allowed file extensions are: xlsx, csv</source>
 			</trans-unit>
