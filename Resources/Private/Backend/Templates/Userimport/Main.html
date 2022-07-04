@@ -3,13 +3,24 @@
 <f:layout name="Default"/>
 
 <f:section name="content">
-    <f:form action="upload" name="importJob" object="{importJob}" enctype="multipart/form-data" >
-        <f:render partial="ValidationResults"/>
-        <div class="form-group">
-            <label for="file">{f:translate(key: 'uploadFile.label')}</label>
-            <userimport:form.upload id="file" property="file" class="form-control-file" additionalAttributes="{required: 'true'}"/>
-            <small class="form-text text-muted">{f:translate(key: 'uploadFile.help')}</small>
-        </div>
-        <button type="submit" class="btn btn-primary">{f:translate(key: 'uploadSubmit.label')}</button>
-    </f:form>
+    <f:if condition="{uploadStorageFolder}">
+        <f:then>
+            <h4>{f:translate(key: 'uploadStorageFolder.label')}</h4>
+            <p>{uploadStorageFolder} {f:translate(key: 'seeExtensionManager.help')}</p>
+            <f:form action="upload" name="importJob" object="{importJob}" enctype="multipart/form-data" >
+                <f:render partial="ValidationResults"/>
+                <div class="form-group">
+                    <label for="file">{f:translate(key: 'uploadFile.label')}</label>
+                    <userimport:form.upload id="file" property="file" class="form-control-file" additionalAttributes="{required: 'true'}"/>
+                    <small class="form-text text-muted">{f:translate(key: 'uploadFile.help')}</small>
+                </div>
+                <button type="submit" class="btn btn-primary">{f:translate(key: 'uploadSubmit.label')}</button>
+            </f:form>
+        </f:then>
+        <f:else>
+            <div class="alert alert-danger" role="alert">
+                {f:translate(key: 'uploadStorageFolder.missing')}
+            </div>
+        </f:else>
+    </f:if>
 </f:section>

@@ -6,6 +6,15 @@
 			<trans-unit id="moduleTitle">
 				<target>Benutzer-Import</target>
 			</trans-unit>
+			<trans-unit id="uploadStorageFolder.label">
+				<target>Upload-Verzeichnis</target>
+			</trans-unit>
+			<trans-unit id="uploadStorageFolder.missing">
+				<target>Bitte Upload-Verzeichnis im Extension Manager konfigurieren. Siehe README für mehr Details.</target>
+			</trans-unit>
+			<trans-unit id="seeExtensionManager.help">
+				<target>(siehe Extension Manager)</target>
+			</trans-unit>
 			<trans-unit id="uploadFile.label">
 				<target>Datei auswählen</target>
 			</trans-unit>
