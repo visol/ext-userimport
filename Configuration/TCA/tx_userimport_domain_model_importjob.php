@@ -19,9 +19,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
             'disabled' => 'hidden'
         ],
         'searchFields' => 'title,style,cached_votes,cached_rank,image,votes,',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
-                'userimport'
-            ) . 'Resources/Public/Icons/tx_userimport_domain_model_importjob.gif'
+        'iconfile' => 'EXT:userimport/Resources/Public/Icons/tx_userimport_domain_model_importjob.gif',
     ],
     'types' => [
         '1' => ['showitem' => 'hidden;;1, file, import_options, field_mapping'],

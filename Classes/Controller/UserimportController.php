@@ -26,31 +26,31 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 
     /**
      * @var \Visol\Userimport\Domain\Repository\ImportJobRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $importJobRepository = null;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $persistenceManager = null;
 
     /**
      * @var \Visol\Userimport\Service\SpreadsheetService
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $spreadsheetService = null;
 
     /**
      * @var \Visol\Userimport\Service\UserImportService
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $userImportService = null;
 
     /**
      * @var \Visol\Userimport\Service\TcaService
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $tcaService = null;
 
