@@ -1,6 +1,9 @@
 <?php
 namespace Visol\Userimport\ViewHelpers\Form;
 
+use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 /***************************************************************
  *  Copyright notice
  *
@@ -26,21 +29,18 @@ namespace Visol\Userimport\ViewHelpers\Form;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Class UploadViewHelper
  */
 class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Security\Cryptography\HashService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var HashService
      */
     protected $hashService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var PropertyMapper
      */
     protected $propertyMapper;
 
@@ -81,7 +81,7 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelpe
      * Return a previously uploaded resource.
      * Return NULL if errors occurred during property mapping for this property.
      *
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @return FileReference
      */
     protected function getUploadedResource()
     {
@@ -94,9 +94,19 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelpe
             // @deprecated since 7.6 will be removed once 6.2 support is removed
             $resource = $this->getValue(false);
         }
-        if ($resource instanceof \TYPO3\CMS\Extbase\Domain\Model\FileReference) {
+        if ($resource instanceof FileReference) {
             return $resource;
         }
         return $this->propertyMapper->convert($resource, 'TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference');
+    }
+
+    public function injectHashService(HashService $hashService): void
+    {
+        $this->hashService = $hashService;
+    }
+
+    public function injectPropertyMapper(PropertyMapper $propertyMapper): void
+    {
+        $this->propertyMapper = $propertyMapper;
     }
 }

@@ -12,7 +12,8 @@ namespace Visol\Userimport\Service;
  *  (c) 2018 Lorenz Ulrich <lorenz.ulrich@visol.ch>, visol digitale Dienstleistungen GmbH
  *
  ***/
-
+use TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -21,8 +22,6 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
-use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 use Visol\Userimport\Domain\Model\ImportJob;
 
 class SpreadsheetService implements SingletonInterface
@@ -189,7 +188,7 @@ class SpreadsheetService implements SingletonInterface
                 $saltedPassword = md5($rows[$i]['password']);
                 // Create salted password
                 if (ExtensionManagementUtility::isLoaded('saltedpasswords') && SaltedPasswordsUtility::isUsageEnabled('FE')) {
-                    $objSalt = SaltFactory::getSaltingInstance(null);
+                    $objSalt = PasswordHashFactory::getSaltingInstance(null);
                     if (is_object($objSalt)) {
                         $saltedPassword = $objSalt->getHashedPassword($rows[$i]['password']);
                     }

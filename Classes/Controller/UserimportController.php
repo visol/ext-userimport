@@ -12,7 +12,13 @@ namespace Visol\Userimport\Controller;
  *  (c) 2018 Lorenz Ulrich <lorenz.ulrich@visol.ch>, visol digitale Dienstleistungen GmbH
  *
  ***/
-
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use Visol\Userimport\Domain\Repository\ImportJobRepository;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use Visol\Userimport\Service\SpreadsheetService;
+use Visol\Userimport\Service\UserImportService;
+use Visol\Userimport\Service\TcaService;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use Visol\Userimport\Domain\Model\ImportJob;
@@ -21,43 +27,38 @@ use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 /**
  * UserimportController
  */
-class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class UserimportController extends ActionController
 {
 
     /**
-     * @var \Visol\Userimport\Domain\Repository\ImportJobRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var ImportJobRepository
      */
     protected $importJobRepository = null;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var PersistenceManagerInterface
      */
     protected $persistenceManager = null;
 
     /**
-     * @var \Visol\Userimport\Service\SpreadsheetService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var SpreadsheetService
      */
     protected $spreadsheetService = null;
 
     /**
-     * @var \Visol\Userimport\Service\UserImportService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var UserImportService
      */
     protected $userImportService = null;
 
     /**
-     * @var \Visol\Userimport\Service\TcaService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @var TcaService
      */
     protected $tcaService = null;
 
     /**
      * @return void
      */
-    public function mainAction()
+    public function mainAction(): ResponseInterface
     {
         $importJob = $this->objectManager->get(ImportJob::class);
 
@@ -68,6 +69,7 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         }
 
         $this->view->assign('importJob', $importJob);
+        return $this->htmlResponse();
     }
 
     protected function initializeUploadAction()
@@ -100,7 +102,7 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     /**
      * @param ImportJob $importJob
      */
-    public function optionsAction(ImportJob $importJob)
+    public function optionsAction(ImportJob $importJob): ResponseInterface
     {
         $this->view->assign('importJob', $importJob);
 
@@ -113,12 +115,13 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $this->view->assign('frontendUserFolders', $this->tcaService->getFrontendUserFolders());
         $this->view->assign('frontendUserGroups', $this->tcaService->getFrontendUserGroups());
         $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableUniqueFieldNames());
+        return $this->htmlResponse();
     }
 
     /**
      * @param ImportJob $importJob
      */
-    public function fieldMappingAction(ImportJob $importJob)
+    public function fieldMappingAction(ImportJob $importJob): ResponseInterface
     {
         $this->view->assign('importJob', $importJob);
 
@@ -158,13 +161,14 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         // If username is generated from e-mail, the field e-mail must be mapped
         $emailMustBeMapped = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
         $this->view->assign('emailMustBeMapped', $emailMustBeMapped);
+        return $this->htmlResponse();
     }
 
     /**
      * @param ImportJob $importJob
      * @param array $fieldMapping
      */
-    public function importPreviewAction(ImportJob $importJob, array $fieldMapping)
+    public function importPreviewAction(ImportJob $importJob, array $fieldMapping): ResponseInterface
     {
         $this->view->assign('importJob', $importJob);
 
@@ -176,12 +180,13 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         $previewData = $this->spreadsheetService->generateDataFromImportJob($importJob, true);
         $this->view->assign('previewDataHeader', array_keys($previewData[0]));
         $this->view->assign('previewData', $previewData);
+        return $this->htmlResponse();
     }
 
     /**
      * @param ImportJob $importJob
      */
-    public function performImportAction(ImportJob $importJob)
+    public function performImportAction(ImportJob $importJob): ResponseInterface
     {
         $rowsToImport = $this->spreadsheetService->generateDataFromImportJob($importJob);
         $this->view->assign('rowsInSource', count($rowsToImport));
@@ -198,6 +203,7 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
         // Remove import job
         $this->importJobRepository->remove($importJob);
         $this->persistenceManager->persistAll();
+        return $this->htmlResponse();
     }
 
     /**
@@ -208,5 +214,30 @@ class UserimportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
     public function getErrorFlashMessage()
     {
         return false;
+    }
+
+    public function injectImportJobRepository(ImportJobRepository $importJobRepository): void
+    {
+        $this->importJobRepository = $importJobRepository;
+    }
+
+    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
+
+    public function injectSpreadsheetService(SpreadsheetService $spreadsheetService): void
+    {
+        $this->spreadsheetService = $spreadsheetService;
+    }
+
+    public function injectUserImportService(UserImportService $userImportService): void
+    {
+        $this->userImportService = $userImportService;
+    }
+
+    public function injectTcaService(TcaService $tcaService): void
+    {
+        $this->tcaService = $tcaService;
     }
 }

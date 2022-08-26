@@ -1,18 +1,21 @@
 <?php
-defined('TYPO3_MODE') || die('Access denied.');
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use Visol\Userimport\Controller\UserimportController;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+defined('TYPO3') || die('Access denied.');
 
 call_user_func(
     function () {
 
         if (TYPO3_MODE === 'BE') {
 
-            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-                'Visol.Userimport',
+            ExtensionUtility::registerModule(
+                'Userimport',
                 'web', // Make module a submodule of 'web'
                 'userimport', // Submodule key
                 '', // Position
                 [
-                    'Userimport' => 'main,upload,options,fieldMapping,importPreview,performImport',
+                    UserimportController::class => 'main,upload,options,fieldMapping,importPreview,performImport',
 
                 ],
                 [
@@ -24,6 +27,6 @@ call_user_func(
             );
         }
 
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('userimport', 'Configuration/TypoScript', 'Frontend User Import');
+        ExtensionManagementUtility::addStaticFile('userimport', 'Configuration/TypoScript', 'Frontend User Import');
     }
 );

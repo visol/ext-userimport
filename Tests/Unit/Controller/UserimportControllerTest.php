@@ -1,22 +1,24 @@
 <?php
 namespace Visol\Userimport\Tests\Unit\Controller;
 
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use Visol\Userimport\Controller\UserimportController;
 /**
  * Test case.
  *
  * @author Lorenz Ulrich <lorenz.ulrich@visol.ch>
  */
-class UserimportControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class UserimportControllerTest extends UnitTestCase
 {
     /**
-     * @var \Visol\Userimport\Controller\UserimportController
+     * @var UserimportController
      */
     protected $subject = null;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->subject = $this->getMockBuilder(\Visol\Userimport\Controller\UserimportController::class)
+        $this->subject = $this->getMockBuilder(UserimportController::class)
             ->setMethods(['redirect', 'forward', 'addFlashMessage'])
             ->disableOriginalConstructor()
             ->getMock();

@@ -1,5 +1,6 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+if (!defined('TYPO3')) {
     die ('Access denied.');
 }
 
@@ -13,7 +14,6 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
-        'dividers2tabs' => true,
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden'
@@ -22,7 +22,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'iconfile' => 'EXT:userimport/Resources/Public/Icons/tx_userimport_domain_model_importjob.gif',
     ],
     'types' => [
-        '1' => ['showitem' => 'hidden;;1, file, import_options, field_mapping'],
+        '1' => ['showitem' => 'hidden,--palette--;;1,file,import_options,field_mapping'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
@@ -30,7 +30,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
     'columns' => [
         'hidden' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
             ],
@@ -38,11 +38,11 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'file' => [
             'exclude' => true,
             'label' => $ll . 'tx_userimport_domain_model_importjob.file',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
                 'file',
                 [
                     'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
                     ],
                     'foreign_match_fields' => [
                         'fieldname' => 'file',

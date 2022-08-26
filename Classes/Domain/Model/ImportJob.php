@@ -2,6 +2,9 @@
 
 namespace Visol\Userimport\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -12,8 +15,7 @@ namespace Visol\Userimport\Domain\Model;
  *  (c) 2018 Lorenz Ulrich <lorenz.ulrich@visol.ch>, visol digitale Dienstleistungen GmbH
  *
  ***/
-
-class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class ImportJob extends AbstractEntity
 {
 
     const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
@@ -25,7 +27,7 @@ class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var FileReference
      */
     protected $file = null;
 
@@ -40,7 +42,7 @@ class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $fieldMapping;
 
     /**
-     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference $file
+     * @return FileReference $file
      */
     public function getFile()
     {
@@ -50,11 +52,11 @@ class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the image
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $file
+     * @param FileReference $file
      *
      * @return void
      */
-    public function setFile(\TYPO3\CMS\Extbase\Domain\Model\FileReference $file)
+    public function setFile(FileReference $file)
     {
         $this->file = $file;
     }
@@ -77,9 +79,9 @@ class ImportJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $option
-     * @transient
      *
      * @return mixed
+     * @Extbase\ORM\Transient
      */
     public function getImportOption($option)
     {
