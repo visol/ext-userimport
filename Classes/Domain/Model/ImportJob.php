@@ -81,7 +81,7 @@ class ImportJob extends AbstractEntity
      * @param string $option
      *
      * @return mixed
-     * @Extbase\ORM\Transient
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
     public function getImportOption($option)
     {
