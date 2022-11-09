@@ -209,8 +209,8 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $moduleConfiguration = $extensionConfiguration->get('userimport');
 
-        if (!empty($moduleConfiguration['uploadStorageFolder']['value'])) {
-            $uploadStorageFolder = $moduleConfiguration['uploadStorageFolder']['value'];
+        if (!empty($moduleConfiguration['uploadStorageFolder'])) {
+            $uploadStorageFolder = $moduleConfiguration['uploadStorageFolder'];
         } else {
             throw new \Exception('You must configure an upload folder in the Extension Manager configuration.', 1643747930);
         }
