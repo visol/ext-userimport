@@ -68,8 +68,8 @@ class UserimportController extends ActionController
         $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $moduleConfiguration = $extensionConfiguration->get('userimport');
 
-        if (!empty($moduleConfiguration['uploadStorageFolder']['value'])) {
-            $this->view->assign('uploadStorageFolder', $moduleConfiguration['uploadStorageFolder']['value']);
+        if (!empty($moduleConfiguration['uploadStorageFolder'])) {
+            $this->view->assign('uploadStorageFolder', $moduleConfiguration['uploadStorageFolder']);
         }
 
         $this->view->assign('importJob', $importJob);

@@ -5,3 +5,48 @@
 .mb-0 {
 	margin-bottom: 0;
 }
+
+#typo3-docheader .typo3-docheader-functions {
+	height: 52px;
+	line-height: 27px;
+	padding-left: 27px;
+	padding-top: 12px;
+	border-bottom: 1px solid #e1e1e1;
+}
+
+.typo3-fullDoc {
+	height: 100%;
+	width: 100%;
+}
+
+#typo3-docheader {
+	background: #eee;
+}
+
+#typo3-docbody {
+	position: absolute;
+	top: 49px;
+	bottom: 0;
+	overflow: auto;
+	width: 100%;
+	z-index: 2;
+}
+
+#typo3-inner-docbody {
+	display: block;
+	position: absolute;
+	height: auto;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 30px;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+input[type="file"] {
+	display: block;
+}
