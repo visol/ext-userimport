@@ -24,6 +24,8 @@ namespace Visol\Userimport\Mvc\Property\TypeConverter;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -204,11 +206,8 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
             }
         }
 
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility */
-        $configurationUtility = $objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-        $moduleConfiguration = $configurationUtility->getCurrentConfiguration('userimport');
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        $moduleConfiguration = $extensionConfiguration->get('userimport');
 
         if (!empty($moduleConfiguration['uploadStorageFolder']['value'])) {
             $uploadStorageFolder = $moduleConfiguration['uploadStorageFolder']['value'];

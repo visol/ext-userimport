@@ -12,6 +12,9 @@ namespace Visol\Userimport\Controller;
  *  (c) 2018 Lorenz Ulrich <lorenz.ulrich@visol.ch>, visol digitale Dienstleistungen GmbH
  *
  ***/
+
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Visol\Userimport\Domain\Repository\ImportJobRepository;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -60,10 +63,11 @@ class UserimportController extends ActionController
      */
     public function mainAction(): ResponseInterface
     {
-        $importJob = $this->objectManager->get(ImportJob::class);
+        $importJob = GeneralUtility::makeInstance(ImportJob::class);
 
-        $configurationUtility = $this->objectManager->get('TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility');
-        $moduleConfiguration = $configurationUtility->getCurrentConfiguration('userimport');
+        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+        $moduleConfiguration = $extensionConfiguration->get('userimport');
+
         if (!empty($moduleConfiguration['uploadStorageFolder']['value'])) {
             $this->view->assign('uploadStorageFolder', $moduleConfiguration['uploadStorageFolder']['value']);
         }
