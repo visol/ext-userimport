@@ -50,3 +50,11 @@
 input[type="file"] {
 	display: block;
 }
+
+#typo3-inner-docbody li {
+	color: #000000;
+}
+
+.alert-light {
+	background: #ffffff !important;
+}
