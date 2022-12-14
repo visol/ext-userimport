@@ -2,6 +2,15 @@
 
 Make sure to upload your files containing user data to a secure folder!
 
+## Compatibility and Maintenance
+
+This package is currently maintained for the following versions:
+
+| TYPO3 Version         | Package Version | Branch  | Maintained    |
+|-----------------------|-----------------|---------|---------------|
+| TYPO3 11.5.x          | 2.x             | master  | Yes           |
+| TYPO3 8.7.x           | 1.x             | -       | No            |
+
 ### Setup a protected storage folder
 
 1. Create a folder /protected/user_upload/userimport in your webroot.
@@ -20,4 +29,3 @@ Module configuration in the Extension Manager.
 Make sure to match the id of your previously created storage folder.
 
 Example entry: `<uid-of-your-protected-storage>:/<subfolder>/`
-
