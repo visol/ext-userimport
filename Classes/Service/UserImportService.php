@@ -30,7 +30,7 @@ class UserImportService implements SingletonInterface
      *
      * @return array
      */
-    public function performImport(array $rowsToImport = [], ImportJob $importJob)
+    public function performImport(ImportJob $importJob, array $rowsToImport = [])
     {
         /** @var ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);

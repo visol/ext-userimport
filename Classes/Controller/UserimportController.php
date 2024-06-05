@@ -195,7 +195,7 @@ class UserimportController extends ActionController
         $rowsToImport = $this->spreadsheetService->generateDataFromImportJob($importJob);
         $this->view->assign('rowsInSource', count($rowsToImport));
 
-        $result = $this->userImportService->performImport($rowsToImport, $importJob);
+        $result = $this->userImportService->performImport($importJob, $rowsToImport);
 
 
         $this->view->assign('updatedRecords', $result['updatedRecords']);
