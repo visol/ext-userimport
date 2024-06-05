@@ -1,3 +1,7 @@
+## 2.0.1 (2024-06-05)
+
+[BUGFIX] Fix deprecated warning on parameter order
+
 ## 2.0.0 (2022-12-14)
 
 [BUGFIX] Add id parameter to arg list
