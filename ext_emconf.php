@@ -4,5 +4,5 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Imports Excel or CSV data as Frontend Users',
     'author' => 'Lorenz Ulrich',
     'author_email' => 'lorenz.ulrich@visol.ch',
-    'version' => '2.0.1',
+    'version' => '2.1.0',
 ];

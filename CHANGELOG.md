@@ -1,3 +1,7 @@
+## 2.1.0 (2025-01-08)
+
+[TASK] raise phpoffice/phpspreadsheet dependency to ^1.29.7
+
 ## 2.0.1 (2024-06-05)
 
 [BUGFIX] Fix deprecated warning on parameter order
