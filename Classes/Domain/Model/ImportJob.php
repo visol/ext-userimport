@@ -25,10 +25,7 @@ class ImportJob extends AbstractEntity
     const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
     const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
 
-    /**
-     * @var FileReference
-     */
-    protected $file;
+    protected ?FileReference $file = null;
 
     /**
      * @var string
@@ -41,18 +38,12 @@ class ImportJob extends AbstractEntity
      */
     protected $fieldMapping;
 
-    /**
-     * @return FileReference $file
-     */
-    public function getFile()
+    public function getFile(): ?FileReference
     {
         return $this->file;
     }
 
-    /**
-     * Sets the image
-     */
-    public function setFile(FileReference $file): void
+    public function setFile(?FileReference $file): void
     {
         $this->file = $file;
     }

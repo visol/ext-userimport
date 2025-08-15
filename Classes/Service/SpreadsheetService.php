@@ -1,7 +1,5 @@
 <?php
 
-namespace Visol\Userimport\Service;
-
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -12,6 +10,8 @@ namespace Visol\Userimport\Service;
  *  (c) 2018 Lorenz Ulrich <lorenz.ulrich@visol.ch>, visol digitale Dienstleistungen GmbH
  *
  ***/
+
+namespace Visol\Userimport\Service;
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -143,7 +143,7 @@ class SpreadsheetService implements SingletonInterface
             // Use tcaDefaultsRow if not empty
             $row = empty($tcaDefaultsRow) ? [] : $tcaDefaultsRow;
             foreach ($fieldMapping as $columnIndex => $fieldName) {
-                $value = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
+                $value = $worksheet->getCell(Coordinate::indexesFromString($columnIndex . $rowIndex))->getValue();
                 $row[$fieldName] = empty($value) ? '' : $value;
             }
 

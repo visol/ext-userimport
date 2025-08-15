@@ -6,7 +6,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,6 +22,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TcaService implements SingletonInterface
 {
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+    ) {
+    }
+
     /**
      * Return all pages of type folder containing frontend users
      *
@@ -102,15 +106,18 @@ class TcaService implements SingletonInterface
      */
     public function getFrontendUserTableFieldNames()
     {
-        /** @var QueryGenerator $queryGenerator */
-        $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
-        $queryGenerator->table = 'fe_users';
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('fe_users');
+        $result = $queryBuilder
+            ->select('*')
+            ->from('fe_users')
+            ->executeQuery()->fetchAssociative();
+
+        $fieldList = array_keys($result);
 
         $fieldsToExclude = ['image', 'TSconfig', 'lastlogin', 'felogin_forgotHash', 'uid', 'pid', 'deleted', 'tstamp', 'crdate', 'cruser_id'];
 
-        $fieldList = $queryGenerator->makeFieldList();
         $fieldArray = [];
-        foreach (GeneralUtility::trimExplode(',', $fieldList) as $fieldName) {
+        foreach ($fieldList as $fieldName) {
             if (in_array($fieldName, $fieldsToExclude)) {
                 // Ignore senseless or dangerous fields
                 continue;

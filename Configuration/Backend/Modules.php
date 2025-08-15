@@ -1,5 +1,7 @@
 <?php
 
+use Visol\Userimport\Controller\UserimportController;
+
 return [
     'web_UserimportUserimport' => [
         'parent' => 'web',
@@ -7,7 +9,7 @@ return [
         'labels' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_userimport.xlf',
         'extensionName' => 'Userimport',
         'controllerActions' => [
-            \Visol\Userimport\Controller\UserimportController::class => [
+            UserimportController::class => [
                 'main',
                 'upload',
                 'options',
