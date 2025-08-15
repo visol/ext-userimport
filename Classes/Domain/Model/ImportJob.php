@@ -2,6 +2,7 @@
 
 namespace Visol\Userimport\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -30,7 +31,7 @@ class ImportJob extends AbstractEntity
     /**
      * @var string
      */
-    #[TYPO3\CMS\Extbase\Annotation\ORM\Transient]
+    #[Transient]
     protected $importOptions;
 
     /**
