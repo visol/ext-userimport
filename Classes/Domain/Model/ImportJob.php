@@ -18,13 +18,13 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  ***/
 class ImportJob extends AbstractEntity
 {
-    const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
-    const IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES = 'firstRowContainsFieldNames';
-    const IMPORT_OPTION_USE_EMAIL_AS_USERNAME = 'useEmailAsUsername';
-    const IMPORT_OPTION_GENERATE_PASSWORD = 'generatePassword';
-    const IMPORT_OPTION_USER_GROUPS = 'userGroups';
-    const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
-    const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
+    public const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
+    public const IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES = 'firstRowContainsFieldNames';
+    public const IMPORT_OPTION_USE_EMAIL_AS_USERNAME = 'useEmailAsUsername';
+    public const IMPORT_OPTION_GENERATE_PASSWORD = 'generatePassword';
+    public const IMPORT_OPTION_USER_GROUPS = 'userGroups';
+    public const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
+    public const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
 
     protected ?FileReference $file = null;
 

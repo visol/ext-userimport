@@ -40,6 +40,7 @@ return static function (ECSConfig $ecsConfig): void {
     $ecsConfig->skip([
         __DIR__ . '/.Build/',
         __DIR__ . '/vendor/',
+        __DIR__ . '/public/',
 
         // Rules
         DeclareStrictTypesFixer::class,

@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-09T11:23:13Z" product-name="userimport">
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:userimport/Resources/Private/Language/locallang_userimport.xlf" date="2025-08-15T21:15:48Z" product-name="userimport">
 		<header/>
 		<body>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
 				<source>User Import</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
 				<source>Import Excel or CSV data as Frontend Users</source>
 			</trans-unit>
 		</body>

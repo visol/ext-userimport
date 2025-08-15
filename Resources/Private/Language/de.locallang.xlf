@@ -1,141 +1,186 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2018-02-09T11:23:13Z" product-name="userimport">
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:userimport/Resources/Private/Language/locallang.xlf" date="2025-08-15T21:15:10Z" product-name="userimport">
 		<header/>
 		<body>
-			<trans-unit id="moduleTitle">
+			<trans-unit id="moduleTitle" resname="moduleTitle">
+				<source>User Import</source>
 				<target>Benutzer-Import</target>
 			</trans-unit>
-			<trans-unit id="uploadStorageFolder.label">
-				<target>Upload-Verzeichnis</target>
-			</trans-unit>
-			<trans-unit id="uploadStorageFolder.missing">
-				<target>Bitte Upload-Verzeichnis im Extension Manager konfigurieren. Siehe README für mehr Details.</target>
-			</trans-unit>
-			<trans-unit id="seeExtensionManager.help">
-				<target>(siehe Extension Manager)</target>
-			</trans-unit>
-			<trans-unit id="uploadFile.label">
+			<trans-unit id="uploadFile.label" resname="uploadFile.label">
+				<source>Select file</source>
 				<target>Datei auswählen</target>
 			</trans-unit>
-			<trans-unit id="uploadFile.help">
+			<trans-unit id="uploadStorageFolder.label" resname="uploadStorageFolder.label">
+				<source>Upload folder</source>
+				<target>Upload-Verzeichnis</target>
+			</trans-unit>
+			<trans-unit id="uploadStorageFolder.missing" resname="uploadStorageFolder.missing">
+				<source>You must configure an upload folder in the Extension Manager configuration. See README for more details.</source>
+				<target>Bitte Upload-Verzeichnis im Extension Manager konfigurieren. Siehe README für mehr Details.</target>
+			</trans-unit>
+			<trans-unit id="seeExtensionManager.help" resname="seeExtensionManager.help">
+				<source>(See extension manager)</source>
+				<target>(siehe Extension Manager)</target>
+			</trans-unit>
+			<trans-unit id="uploadFile.help" resname="uploadFile.help">
+				<source>Allowed file extensions are: xlsx, csv</source>
 				<target>Erlaubte Datei-Typen sind: xlsx, csv</target>
 			</trans-unit>
-			<trans-unit id="uploadSubmit.label">
+			<trans-unit id="uploadSubmit.label" resname="uploadSubmit.label">
+				<source>Upload</source>
 				<target>Hochladen</target>
 			</trans-unit>
-			<trans-unit id="spreadsheetPreview.header">
+			<trans-unit id="spreadsheetPreview.header" resname="spreadsheetPreview.header">
+				<source>Preview (File: %s)</source>
 				<target>Vorschau (Datei: %s)</target>
 			</trans-unit>
-			<trans-unit id="spreadsheetPreview.help">
+			<trans-unit id="spreadsheetPreview.help" resname="spreadsheetPreview.help">
+				<source>Only the first 5 rows are displayed.</source>
 				<target>Es werden nur die ersten 5 Zeilen dargestellt.</target>
 			</trans-unit>
-			<trans-unit id="importOptions.header">
+			<trans-unit id="importOptions.header" resname="importOptions.header">
+				<source>Import options</source>
 				<target>Import-Optionen</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.firstRowContainsFieldNames.label">
+			<trans-unit id="importOptions.option.firstRowContainsFieldNames.label" resname="importOptions.option.firstRowContainsFieldNames.label">
+				<source>First row contains field names</source>
 				<target>Erste Zeile enthält Spaltennamen</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.firstRowContainsFieldNames.help">
+			<trans-unit id="importOptions.option.firstRowContainsFieldNames.help" resname="importOptions.option.firstRowContainsFieldNames.help">
+				<source>If selected, the first row is ignored when importing.</source>
 				<target>Falls gewählt, wird die erste Zeile beim Import ignoriert.</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.targetFolder.label">
+			<trans-unit id="importOptions.option.targetFolder.label" resname="importOptions.option.targetFolder.label">
+				<source>Target folder</source>
 				<target>Ziel-Ordner</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.userGroups.label">
+			<trans-unit id="importOptions.option.userGroups.label" resname="importOptions.option.userGroups.label">
+				<source>User groups</source>
 				<target>Benutzergruppen</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.userGroups.help">
+			<trans-unit id="importOptions.option.userGroups.help" resname="importOptions.option.userGroups.help">
+				<source>The selected user groups are assigned to the created users.</source>
 				<target>Die ausgewählten Benutzergruppen werden den importierten Benutzern zugewiesen.</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.useEmailAsUsername.label">
+			<trans-unit id="importOptions.option.useEmailAsUsername.label" resname="importOptions.option.useEmailAsUsername.label">
+				<source>Use e-mail column as username</source>
 				<target>E-Mail-Spalte als Benutzername verwenden</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.useEmailAsUsername.help">
+			<trans-unit id="importOptions.option.useEmailAsUsername.help" resname="importOptions.option.useEmailAsUsername.help">
+				<source>The value of the e-mail column is used as username.</source>
 				<target>Der Wert der Spalte E-Mail wird als Benutzername verwendet.</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.generatePassword.label">
+			<trans-unit id="importOptions.option.generatePassword.label" resname="importOptions.option.generatePassword.label">
+				<source>Generate password</source>
 				<target>Kennwort generieren</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.generatePassword.help">
+			<trans-unit id="importOptions.option.generatePassword.help" resname="importOptions.option.generatePassword.help">
+				<source>A random password is generated for imported users. Alternatively, you can import a password column.</source>
 				<target>Ein zufälliges Kennwort wird für importierte Benutzer generiert. Alternativ kann das Kennwort auch importiert werden.</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.updateExistingUsers.label">
+			<trans-unit id="importOptions.option.updateExistingUsers.label" resname="importOptions.option.updateExistingUsers.label">
+				<source>Update existing users</source>
 				<target>Bestehende Benutzer aktualisieren</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.updateExistingUsers.help">
+			<trans-unit id="importOptions.option.updateExistingUsers.help" resname="importOptions.option.updateExistingUsers.help">
+				<source>Update existing users instead of adding new users.</source>
 				<target>Anstatt neue Benutzer hinzuzufügen, werden bestehende Benutzer aktualisiert.</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.label">
+			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.label" resname="importOptions.option.updateExistingUsersUniqueField.label">
+				<source>Field to check for update</source>
 				<target>Feld für Aktualisierungs-Prüfung</target>
 			</trans-unit>
-			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.help">
+			<trans-unit id="importOptions.option.updateExistingUsersUniqueField.help" resname="importOptions.option.updateExistingUsersUniqueField.help">
+				<source>If a record having the same value in the selected field is found, it is updated instead of inserted.</source>
 				<target>Ein Benutzer wird dann aktualisiert, wenn bereits ein Benutzer mit demselben Wert im angegebenen Feld existiert.</target>
 			</trans-unit>
-			<trans-unit id="importOptionsSubmit.label">
+			<trans-unit id="importOptionsSubmit.label" resname="importOptionsSubmit.label">
+				<source>Continue</source>
 				<target>Weiter</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.header">
+			<trans-unit id="fieldMapping.header" resname="fieldMapping.header">
+				<source>Field Mapping</source>
 				<target>Feldzuweisung</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.tableHeader.column">
+			<trans-unit id="fieldMapping.tableHeader.column" resname="fieldMapping.tableHeader.column">
+				<source>Column</source>
 				<target>Spalte</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.tableHeader.feUserMapping">
+			<trans-unit id="fieldMapping.tableHeader.feUserMapping" resname="fieldMapping.tableHeader.feUserMapping">
+				<source>Field mapping</source>
 				<target>Feldzuweisung</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.tableHeader.examples">
+			<trans-unit id="fieldMapping.tableHeader.examples" resname="fieldMapping.tableHeader.examples">
+				<source>Examples</source>
 				<target>Beispiele</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.feUserMapping.placeholder">
+			<trans-unit id="fieldMapping.feUserMapping.placeholder" resname="fieldMapping.feUserMapping.placeholder">
+				<source>Map to field...</source>
 				<target>Zuweisung zu Feld...</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.validation.usernameMustBeMapped">
+			<trans-unit id="fieldMapping.validation.usernameMustBeMapped" resname="fieldMapping.validation.usernameMustBeMapped">
+				<source>The username field must be mapped.</source>
 				<target>Das Feld username muss zugewiesen werden.</target>
 			</trans-unit>
-			<trans-unit id="fieldMapping.validation.emailMustBeMapped">
+			<trans-unit id="fieldMapping.validation.emailMustBeMapped" resname="fieldMapping.validation.emailMustBeMapped">
+				<source>The e-mail field must be mapped because the username is generated from it.</source>
 				<target>Das Feld email muss zugewiesen werden, da daraus der Benutzername generiert wird.</target>
 			</trans-unit>
-			<trans-unit id="fieldMappingSubmit.label">
+			<trans-unit id="fieldMappingSubmit.label" resname="fieldMappingSubmit.label">
+				<source>Continue</source>
 				<target>Weiter</target>
 			</trans-unit>
-			<trans-unit id="importPreview.header">
+			<trans-unit id="importPreview.header" resname="importPreview.header">
+				<source>Import Preview</source>
 				<target>Import-Vorschau</target>
 			</trans-unit>
-			<trans-unit id="importPreviewSubmit.label">
+			<trans-unit id="importPreviewSubmit.label" resname="importPreviewSubmit.label">
+				<source>Import data</source>
 				<target>Daten importieren</target>
 			</trans-unit>
-			<trans-unit id="performImport.header">
+			<trans-unit id="performImport.header" resname="performImport.header">
+				<source>Import log</source>
 				<target>Import-Log</target>
 			</trans-unit>
-			<trans-unit id="performImport.rowsInSource">
+			<trans-unit id="performImport.rowsInSource" resname="performImport.rowsInSource">
+				<source>%s rows in source file.</source>
 				<target>%s Zeilen in der hochgeladenen Datei.</target>
 			</trans-unit>
-			<trans-unit id="performImport.insertedRecords">
+			<trans-unit id="performImport.insertedRecords" resname="performImport.insertedRecords">
+				<source>%s records inserted.</source>
 				<target>%s Datensätze importiert.</target>
 			</trans-unit>
-			<trans-unit id="performImport.updatedRecords">
+			<trans-unit id="performImport.updatedRecords" resname="performImport.updatedRecords">
+				<source>%s records updated.</source>
 				<target>%s Datensätze aktualisiert.</target>
 			</trans-unit>
-			<trans-unit id="error.1399312430">
+			<trans-unit id="error.1399312430" resname="error.1399312430">
+				<source>File extension not allowed. Allowed file types: xlsx, csv</source>
 				<target>Datei-Typ nicht erlaubt. Erlaubte Datei-Typen: xlsx, csv</target>
 			</trans-unit>
-			<trans-unit id="performImport.update.fail">
+			<trans-unit id="performImport.update.fail" resname="performImport.update.fail">
+				<source>Update failed for: %s</source>
 				<target>Aktualisierung fehlgeschlagen für: %s</target>
 			</trans-unit>
-			<trans-unit id="performImport.update.moreThanOneRecordFound">
+			<trans-unit id="performImport.update.moreThanOneRecordFound" resname="performImport.update.moreThanOneRecordFound">
+				<source>Update failed for: %s (Reason: More than one identical record to update was found.)</source>
 				<target>Aktualisierung fehlgeschlagen für: %s (Grund: Mehr als ein identischer Datensatz für die Aktualisierung gefunden.)</target>
 			</trans-unit>
-			<trans-unit id="performImport.update.success">
+			<trans-unit id="performImport.update.success" resname="performImport.update.success">
+				<source>Update successful for: %s</source>
 				<target>Aktualisierung erfolgreich für: %s</target>
 			</trans-unit>
-			<trans-unit id="performImport.insert.fail">
+			<trans-unit id="performImport.insert.fail" resname="performImport.insert.fail">
+				<source>Insert failed for: %s</source>
 				<target>Import fehlgeschlagen für: %s</target>
 			</trans-unit>
-			<trans-unit id="performImport.insert.success">
+			<trans-unit id="performImport.insert.success" resname="performImport.insert.success">
+				<source>Insert successful for: %s</source>
 				<target>Import erfolgreich für: %s</target>
 			</trans-unit>
-			<trans-unit id="performImport.goToTargetFolder">
+			<trans-unit id="performImport.goToTargetFolder" resname="performImport.goToTargetFolder">
+				<source>Go to target folder</source>
 				<target>Zum Zielordner wechseln</target>
 			</trans-unit>
 		</body>

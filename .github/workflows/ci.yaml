@@ -66,6 +66,9 @@ jobs:
         run: composer install --no-progress --no-interaction --optimize-autoloader
 
       - name: Fetch schema for xliff
+        run: mkdir .Build
+
+      - name: Fetch schema for xliff
         run: wget https://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd --output-document=.Build/xliff-core-1.2-strict.xsd
 
       - name: TYPO3 language files
