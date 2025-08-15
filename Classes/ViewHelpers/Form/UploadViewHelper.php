@@ -35,7 +35,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelper
 {
     /**
-     * @var HashService
+     * @var \TYPO3\CMS\Core\Crypto\HashService
      */
     protected $hashService;
 
@@ -58,7 +58,7 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelpe
         if ($resource !== null) {
             $resourcePointerIdAttribute = '';
             if ($this->hasArgument('id')) {
-                $resourcePointerIdAttribute = ' id="' . htmlspecialchars($this->arguments['id']) . '-file-reference"';
+                $resourcePointerIdAttribute = ' id="' . htmlspecialchars($this->additionalArguments['id']) . '-file-reference"';
             }
             $resourcePointerValue = $resource->getUid();
             if ($resourcePointerValue === null) {
@@ -72,9 +72,7 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelpe
             $output .= $this->renderChildren();
             $this->templateVariableContainer->remove('resource');
         }
-
-        $output .= parent::render();
-        return $output;
+        return $output . parent::render();
     }
 
     /**
@@ -100,7 +98,7 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\UploadViewHelpe
         return $this->propertyMapper->convert($resource, 'TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference');
     }
 
-    public function injectHashService(HashService $hashService): void
+    public function injectHashService(\TYPO3\CMS\Core\Crypto\HashService $hashService): void
     {
         $this->hashService = $hashService;
     }

@@ -54,6 +54,7 @@ use TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility;
 class UploadedFileReferenceConverter extends AbstractTypeConverter
 {
 
+    public $objectManager;
     /**
      * Folder where the file upload should go to (including storage).
      */
@@ -94,7 +95,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     protected $resourceFactory;
 
     /**
-     * @var HashService
+     * @var \TYPO3\CMS\Core\Crypto\HashService
      */
     protected $hashService;
 
@@ -114,8 +115,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
      *
      * @param string|int $source
      * @param string $targetType
-     * @param array $convertedChildProperties
-     * @param PropertyMappingConfigurationInterface $configuration
      * @throws \TYPO3\CMS\Extbase\Property\Exception
      * @return AbstractFileFolder
      * @api
@@ -129,9 +128,8 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
                     if (strpos($resourcePointer, 'file:') === 0) {
                         $fileUid = substr($resourcePointer, 5);
                         return $this->createFileReferenceFromFalFileObject($this->resourceFactory->getFileObject($fileUid));
-                    } else {
-                        return $this->createFileReferenceFromFalFileReferenceObject($this->resourceFactory->getFileReferenceObject($resourcePointer), $resourcePointer);
                     }
+                    return $this->createFileReferenceFromFalFileReferenceObject($this->resourceFactory->getFileReferenceObject($resourcePointer), $resourcePointer);
                 } catch (\InvalidArgumentException $e) {
                     // Nothing to do. No file is uploaded and resource pointer is invalid. Discard!
                 }
@@ -165,7 +163,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     }
 
     /**
-     * @param FalFile $file
      * @param int $resourcePointer
      * @return FileReference
      */
@@ -185,8 +182,6 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Import a resource and respect configuration given for properties
      *
-     * @param array $uploadInfo
-     * @param PropertyMappingConfigurationInterface $configuration
      * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
      * @throws TypeConverterException
      * @throws ExistingTargetFileNameException
@@ -226,13 +221,10 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
             ? $this->hashService->validateAndStripHmac($uploadInfo['submittedFile']['resourcePointer'])
             : null;
 
-        $fileReferenceModel = $this->createFileReferenceFromFalFileObject($uploadedFile, $resourcePointer);
-
-        return $fileReferenceModel;
+        return $this->createFileReferenceFromFalFileObject($uploadedFile, $resourcePointer);
     }
 
     /**
-     * @param FalFileReference $falFileReference
      * @param int $resourcePointer
      * @return FileReference
      */
@@ -255,7 +247,7 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $this->resourceFactory = $resourceFactory;
     }
 
-    public function injectHashService(HashService $hashService): void
+    public function injectHashService(\TYPO3\CMS\Core\Crypto\HashService $hashService): void
     {
         $this->hashService = $hashService;
     }

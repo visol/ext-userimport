@@ -13,7 +13,6 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden'
@@ -38,22 +37,20 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'file' => [
             'exclude' => true,
             'label' => $ll . 'tx_userimport_domain_model_importjob.file',
-            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-                'file',
-                [
-                    'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
-                    ],
-                    'foreign_match_fields' => [
-                        'fieldname' => 'file',
-                        'tablenames' => 'tx_userimport_domain_model_importjob',
-                        'table_local' => 'sys_file',
-                    ],
-                    'minitems' => 1,
-                    'maxitems' => 1,
+            'config' => [
+                ### !!! Watch out for fieldName different from columnName
+                'type' => 'file',
+                'allowed' => 'xlsx,csv',
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
                 ],
-                'xlsx,csv'
-            ),
+                'foreign_match_fields' => [
+                    'fieldname' => 'file',
+                    'tablenames' => 'tx_userimport_domain_model_importjob',
+                ],
+                'minitems' => 1,
+                'maxitems' => 1,
+            ],
         ],
         'import_options' => [
             'exclude' => true,

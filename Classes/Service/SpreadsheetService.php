@@ -118,9 +118,7 @@ class SpreadsheetService implements SingletonInterface
     /**
      * Generate data from import job data and configuration
      *
-     * @param ImportJob $importJob
      * @param bool $isPreview
-     *
      * @return array
      */
     public function generateDataFromImportJob(ImportJob $importJob, $isPreview = false)
@@ -148,7 +146,7 @@ class SpreadsheetService implements SingletonInterface
             $row = empty($tcaDefaultsRow) ? [] : $tcaDefaultsRow;
             foreach ($fieldMapping as $columnIndex => $fieldName) {
                 $value = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
-                $row[$fieldName] = !empty($value) ? $value : '';
+                $row[$fieldName] = empty($value) ? '' : $value;
             }
 
             if (!array_filter($row)) {

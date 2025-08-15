@@ -38,11 +38,8 @@ class TcaService implements SingletonInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('doktype', 254),
-                $queryBuilder->expr()->eq('module', $queryBuilder->createNamedParameter('fe_users', \PDO::PARAM_STR))
-            )
-            ->addOrderBy('uid', 'DESC')
-            ->execute()
-            ->fetchAll();
+                $queryBuilder->expr()->eq('module', $queryBuilder->createNamedParameter('fe_users', \TYPO3\CMS\Core\Database\Connection::PARAM_STR))
+            )->addOrderBy('uid', 'DESC')->executeQuery()->fetchAllAssociative();
 
         $folders = [];
 
@@ -54,7 +51,7 @@ class TcaService implements SingletonInterface
             }
             $folders[] = [
                 'uid' => $page['uid'],
-                'title' => !empty($title) ? $title : $page['title']
+                'title' => $title === '' || $title === '0' ? $page['title'] : $title
             ];
         }
 
@@ -70,12 +67,8 @@ class TcaService implements SingletonInterface
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_groups');
-        $result = $queryBuilder
-            ->select('uid', 'title')
-            ->from('fe_groups')
-            ->execute()
-            ->fetchAll();
-        return $result;
+        return $queryBuilder
+            ->select('uid', 'title')->from('fe_groups')->executeQuery()->fetchAllAssociative();
     }
 
     /**

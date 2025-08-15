@@ -29,12 +29,12 @@ class ImportJob extends AbstractEntity
     /**
      * @var FileReference
      */
-    protected $file = null;
+    protected $file;
 
     /**
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[TYPO3\CMS\Extbase\Annotation\ORM\Transient]
     protected $importOptions;
 
     /**
@@ -53,29 +53,21 @@ class ImportJob extends AbstractEntity
     /**
      * Sets the image
      *
-     * @param FileReference $file
      *
-     * @return void
      */
-    public function setFile(FileReference $file)
+    public function setFile(FileReference $file): void
     {
         $this->file = $file;
     }
 
-    /**
-     * @return string
-     */
     public function getImportOptions(): string
     {
         return $this->importOptions;
     }
 
-    /**
-     * @return array
-     */
     public function getImportOptionsArray(): array
     {
-        return !empty($this->importOptions) ? unserialize($this->importOptions) : [];
+        return empty($this->importOptions) ? [] : unserialize($this->importOptions);
     }
 
     /**
@@ -85,37 +77,25 @@ class ImportJob extends AbstractEntity
      */
     public function getImportOption($option)
     {
-        return array_key_exists($option, $this->getImportOptionsArray()) ? $this->getImportOptionsArray()[$option] : null;
+        return $this->getImportOptionsArray()[$option] ?? null;
     }
 
-    /**
-     * @param array $importOptions
-     */
-    public function setImportOptions(array $importOptions)
+    public function setImportOptions(array $importOptions): void
     {
         $this->importOptions = serialize($importOptions);
     }
 
-    /**
-     * @return string
-     */
     public function getFieldMapping(): string
     {
         return $this->fieldMapping;
     }
 
-    /**
-     * @return array
-     */
     public function getFieldMappingArray(): array
     {
-        return !empty($this->fieldMapping) ? unserialize($this->fieldMapping) : [];
+        return empty($this->fieldMapping) ? [] : unserialize($this->fieldMapping);
     }
 
-    /**
-     * @param array $fieldMapping
-     */
-    public function setFieldMapping(array $fieldMapping)
+    public function setFieldMapping(array $fieldMapping): void
     {
         $this->fieldMapping = serialize($fieldMapping);
     }

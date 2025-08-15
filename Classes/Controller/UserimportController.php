@@ -36,31 +36,28 @@ class UserimportController extends ActionController
     /**
      * @var ImportJobRepository
      */
-    protected $importJobRepository = null;
+    protected $importJobRepository;
 
     /**
      * @var PersistenceManagerInterface
      */
-    protected $persistenceManager = null;
+    protected $persistenceManager;
 
     /**
      * @var SpreadsheetService
      */
-    protected $spreadsheetService = null;
+    protected $spreadsheetService;
 
     /**
      * @var UserImportService
      */
-    protected $userImportService = null;
+    protected $userImportService;
 
     /**
      * @var TcaService
      */
-    protected $tcaService = null;
+    protected $tcaService;
 
-    /**
-     * @return void
-     */
     public function mainAction(): ResponseInterface
     {
         $importJob = GeneralUtility::makeInstance(ImportJob::class);
@@ -94,18 +91,18 @@ class UserimportController extends ActionController
     /**
      * @param ImportJob $importJob
      *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    /**
      * @return void
      */
     public function uploadAction(ImportJob $importJob)
     {
         $this->importJobRepository->add($importJob);
         $this->persistenceManager->persistAll();
-        $this->redirect('options', null, null, ['importJob' => $importJob]);
+        return $this->redirect('options', null, null, ['importJob' => $importJob]);
     }
 
-    /**
-     * @param ImportJob $importJob
-     */
     public function optionsAction(ImportJob $importJob): ResponseInterface
     {
         $this->view->assign('importJob', $importJob);
@@ -122,9 +119,6 @@ class UserimportController extends ActionController
         return $this->htmlResponse();
     }
 
-    /**
-     * @param ImportJob $importJob
-     */
     public function fieldMappingAction(ImportJob $importJob): ResponseInterface
     {
         $this->view->assign('importJob', $importJob);
@@ -168,10 +162,6 @@ class UserimportController extends ActionController
         return $this->htmlResponse();
     }
 
-    /**
-     * @param ImportJob $importJob
-     * @param array $fieldMapping
-     */
     public function importPreviewAction(ImportJob $importJob, array $fieldMapping): ResponseInterface
     {
         $this->view->assign('importJob', $importJob);
@@ -187,9 +177,6 @@ class UserimportController extends ActionController
         return $this->htmlResponse();
     }
 
-    /**
-     * @param ImportJob $importJob
-     */
     public function performImportAction(ImportJob $importJob): ResponseInterface
     {
         $rowsToImport = $this->spreadsheetService->generateDataFromImportJob($importJob);
@@ -212,10 +199,8 @@ class UserimportController extends ActionController
 
     /**
      * Deactivate errorFlashMessage
-     *
-     * @return bool|string
      */
-    public function getErrorFlashMessage()
+    public function getErrorFlashMessage(): bool|string
     {
         return false;
     }

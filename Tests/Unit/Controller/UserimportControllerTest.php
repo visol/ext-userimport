@@ -13,7 +13,7 @@ class UserimportControllerTest extends UnitTestCase
     /**
      * @var UserimportController
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {

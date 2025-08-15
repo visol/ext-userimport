@@ -25,8 +25,6 @@ class UserImportService implements SingletonInterface
     /**
      * Imports/updates all given rows as fe_user records respecting the options in the ImportJob
      *
-     * @param array $rowsToImport
-     * @param ImportJob $importJob
      *
      * @return array
      */
@@ -73,7 +71,6 @@ class UserImportService implements SingletonInterface
                             'disable' => 0
                         ]
                     );
-
                     if ($affectedRecords === 1) {
                         $log[] = [
                             'action' => 'update.success',
@@ -86,11 +83,10 @@ class UserImportService implements SingletonInterface
                             'row' => $rowForLog
                         ];
                     }
-
                     $updatedRecords += $affectedRecords;
-
                     continue;
-                } elseif ($existing > 1) {
+                }
+                if ($existing > 1) {
                     // More than one record, fail
                     $log[] = [
                         'action' => 'update.moreThanOneRecordFound',
@@ -100,9 +96,7 @@ class UserImportService implements SingletonInterface
             }
             // Must be newly imported
             $affectedRecords = $queryBuilder
-                ->insert('fe_users', null)
-                ->values($row)
-                ->execute();
+                ->insert('fe_users')->values($row)->executeStatement();
 
             if ($affectedRecords < 1) {
                 // Error case
@@ -117,8 +111,6 @@ class UserImportService implements SingletonInterface
                 ];
             }
             $insertedRecords += $affectedRecords;
-
-            continue;
         }
 
         return [
