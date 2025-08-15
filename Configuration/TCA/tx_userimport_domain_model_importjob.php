@@ -1,7 +1,7 @@
 <?php
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 if (!defined('TYPO3')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 $ll = 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:';
@@ -15,7 +15,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'crdate' => 'crdate',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'searchFields' => 'title,style,cached_votes,cached_rank,image,votes,',
         'iconfile' => 'EXT:userimport/Resources/Public/Icons/tx_userimport_domain_model_importjob.gif',
@@ -38,11 +38,11 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
             'exclude' => true,
             'label' => $ll . 'tx_userimport_domain_model_importjob.file',
             'config' => [
-                ### !!! Watch out for fieldName different from columnName
+                // !!! Watch out for fieldName different from columnName
                 'type' => 'file',
                 'allowed' => 'xlsx,csv',
                 'appearance' => [
-                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                 ],
                 'foreign_match_fields' => [
                     'fieldname' => 'file',
@@ -59,7 +59,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
                 'type' => 'text',
                 'cols' => 60,
                 'rows' => 5,
-            ]
+            ],
         ],
         'field_mapping' => [
             'exclude' => true,
@@ -68,7 +68,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
                 'type' => 'text',
                 'cols' => 60,
                 'rows' => 5,
-            ]
+            ],
         ],
     ],
 ];

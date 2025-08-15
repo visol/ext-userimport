@@ -2,9 +2,9 @@
 
 namespace Visol\Userimport\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -17,7 +17,6 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  ***/
 class ImportJob extends AbstractEntity
 {
-
     const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
     const IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES = 'firstRowContainsFieldNames';
     const IMPORT_OPTION_USE_EMAIL_AS_USERNAME = 'useEmailAsUsername';
@@ -52,8 +51,6 @@ class ImportJob extends AbstractEntity
 
     /**
      * Sets the image
-     *
-     *
      */
     public function setFile(FileReference $file): void
     {
@@ -72,7 +69,6 @@ class ImportJob extends AbstractEntity
 
     /**
      * @param string $option
-     *
      * @return mixed
      */
     public function getImportOption($option)

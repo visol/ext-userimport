@@ -13,13 +13,10 @@ namespace Visol\Userimport\Utility;
  *
  ***/
 
-
 class LogUtility
 {
-
     /**
      * @param $row
-     *
      * @return string
      */
     public static function formatRowForImportLog($row)

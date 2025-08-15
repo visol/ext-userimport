@@ -13,26 +13,25 @@ namespace Visol\Userimport\Controller;
  *
  ***/
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use Visol\Userimport\Domain\Repository\ImportJobRepository;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
-use Visol\Userimport\Service\SpreadsheetService;
-use Visol\Userimport\Service\UserImportService;
-use Visol\Userimport\Service\TcaService;
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use Visol\Userimport\Domain\Model\ImportJob;
+use Visol\Userimport\Domain\Repository\ImportJobRepository;
 use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
+use Visol\Userimport\Service\SpreadsheetService;
+use Visol\Userimport\Service\TcaService;
+use Visol\Userimport\Service\UserImportService;
 
 /**
  * UserimportController
  */
 class UserimportController extends ActionController
 {
-
     /**
      * @var ImportJobRepository
      */
@@ -78,7 +77,7 @@ class UserimportController extends ActionController
         /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
         $propertyMappingConfiguration = $this->arguments['importJob']->getPropertyMappingConfiguration();
         $uploadConfiguration = [
-            UploadedFileReferenceConverter::CONFIGURATION_ALLOWED_FILE_EXTENSIONS => 'xlsx,csv'
+            UploadedFileReferenceConverter::CONFIGURATION_ALLOWED_FILE_EXTENSIONS => 'xlsx,csv',
         ];
         $propertyMappingConfiguration->allowProperties('file');
         $propertyMappingConfiguration->forProperty('file')
@@ -89,12 +88,7 @@ class UserimportController extends ActionController
     }
 
     /**
-     * @param ImportJob $importJob
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    /**
-     * @return void
+     * @return ResponseInterface
      */
     public function uploadAction(ImportJob $importJob)
     {
@@ -131,7 +125,7 @@ class UserimportController extends ActionController
             ImportJob::IMPORT_OPTION_GENERATE_PASSWORD,
             ImportJob::IMPORT_OPTION_USER_GROUPS,
             ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS,
-            ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD
+            ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD,
         ];
         $fieldOptionsArray = [];
         foreach ($fieldOptionArguments as $argumentName) {
@@ -153,11 +147,11 @@ class UserimportController extends ActionController
         );
 
         // If username is not generated from e-mail, the field must be mapped
-        $usernameMustBeMapped = !(bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        $usernameMustBeMapped = !(bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
         $this->view->assign('usernameMustBeMapped', $usernameMustBeMapped);
 
         // If username is generated from e-mail, the field e-mail must be mapped
-        $emailMustBeMapped = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        $emailMustBeMapped = (bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
         $this->view->assign('emailMustBeMapped', $emailMustBeMapped);
         return $this->htmlResponse();
     }
@@ -183,7 +177,6 @@ class UserimportController extends ActionController
         $this->view->assign('rowsInSource', count($rowsToImport));
 
         $result = $this->userImportService->performImport($importJob, $rowsToImport);
-
 
         $this->view->assign('updatedRecords', $result['updatedRecords']);
         $this->view->assign('insertedRecords', $result['insertedRecords']);

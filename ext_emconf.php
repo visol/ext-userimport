@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Frontend User Import',
     'description' => 'Imports Excel or CSV data as Frontend Users',

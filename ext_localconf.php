@@ -1,12 +1,12 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') || die('Access denied.');
 
 (function () {
-
     ExtensionUtility::registerTypeConverter(UploadedFileReferenceConverter::class);
 
     ExtensionManagementUtility::addTypoScriptSetup(

@@ -2,6 +2,14 @@
 
 namespace Visol\Userimport\Service;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -13,16 +21,8 @@ namespace Visol\Userimport\Service;
  *
  ***/
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\QueryGenerator;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 class TcaService implements SingletonInterface
 {
-
     /**
      * Return all pages of type folder containing frontend users
      *
@@ -38,7 +38,7 @@ class TcaService implements SingletonInterface
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('doktype', 254),
-                $queryBuilder->expr()->eq('module', $queryBuilder->createNamedParameter('fe_users', \TYPO3\CMS\Core\Database\Connection::PARAM_STR))
+                $queryBuilder->expr()->eq('module', $queryBuilder->createNamedParameter('fe_users', Connection::PARAM_STR))
             )->addOrderBy('uid', 'DESC')->executeQuery()->fetchAllAssociative();
 
         $folders = [];
@@ -51,7 +51,7 @@ class TcaService implements SingletonInterface
             }
             $folders[] = [
                 'uid' => $page['uid'],
-                'title' => $title === '' || $title === '0' ? $page['title'] : $title
+                'title' => $title === '' || $title === '0' ? $page['title'] : $title,
             ];
         }
 
@@ -82,16 +82,16 @@ class TcaService implements SingletonInterface
         return [
             [
                 'value' => 'name',
-                'label' => 'name'
+                'label' => 'name',
             ],
             [
                 'value' => 'username',
-                'label' => 'username'
+                'label' => 'username',
             ],
             [
                 'value' => 'email',
-                'label' => 'email'
-            ]
+                'label' => 'email',
+            ],
         ];
     }
 
@@ -117,7 +117,7 @@ class TcaService implements SingletonInterface
             }
             $fieldArray[] = [
                 'label' => $fieldName,
-                'value' => $fieldName
+                'value' => $fieldName,
             ];
         }
         return $fieldArray;

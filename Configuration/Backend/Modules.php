@@ -7,7 +7,7 @@ return [
         'labels' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_userimport.xlf',
         'extensionName' => 'Userimport',
         'controllerActions' => [
-            'Visol\Userimport\Controller\UserimportController' => [
+            \Visol\Userimport\Controller\UserimportController::class => [
                 'main',
                 'upload',
                 'options',
