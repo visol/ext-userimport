@@ -1,15 +1,13 @@
 <?php
 
-if (!defined('TYPO3')) {
-    die('Access denied.');
-}
+defined('TYPO3') || die();
 
 $ll = 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:';
 
-$GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
+return [
     'ctrl' => [
         'hideTable' => true,
-        'title' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:tx_userimport_domain_model_importjob',
+        'title' => $ll . 'tx_userimport_domain_model_importjob',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -18,7 +16,9 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
             'disabled' => 'hidden',
         ],
         'searchFields' => 'title,style,cached_votes,cached_rank,image,votes,',
-        'iconfile' => 'EXT:userimport/Resources/Public/Icons/tx_userimport_domain_model_importjob.gif',
+        'typeicon_classes' => [
+            'default' => 'tx_userimport-importjob',
+        ],
     ],
     'types' => [
         '1' => ['showitem' => 'hidden,--palette--;;1,file,import_options,field_mapping'],

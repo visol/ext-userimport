@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:userimport/Resources/Private/Language/locallang_db.xlf" date="2025-08-15T21:15:10Z" product-name="userimport">
+		<header/>
+		<body>
+			<trans-unit id="tx_userimport_domain_model_importjob">
+				<source>User Import</source>
+			</trans-unit>
+			<trans-unit id="tx_userimport_domain_model_importjob.file">
+				<source>File</source>
+			</trans-unit>
+			<trans-unit id="tx_userimport_domain_model_importjob.import_options">
+				<source>Import options</source>
+			</trans-unit>
+			<trans-unit id="tx_userimport_domain_model_importjob.field_mapping">
+				<source>Field mapping</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

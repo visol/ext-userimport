@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg3386" sodipodi:docname="fe_groups.svg" inkscape:version="0.91 r13725" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="595.281px"
+	 height="595.281px" viewBox="123.305 0 595.281 595.281" enable-background="new 123.305 0 595.281 595.281" xml:space="preserve">
+<sodipodi:namedview  id="namedview3392" inkscape:current-layer="svg3386" inkscape:window-y="0" inkscape:window-x="152" inkscape:window-height="960" inkscape:window-width="1441" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:cy="-21" inkscape:cx="-29.173522" inkscape:zoom="3.2966102" showgrid="false" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" bordercolor="#666666" pagecolor="#ffffff" inkscape:window-maximized="0">
+	</sodipodi:namedview>
+<path id="path3388" fill="#F08424" d="M123.305,0h595.281v595.281H123.305V0z"/>
+<g id="g3556" transform="matrix(0.08948267,0,0,0.08948267,8.9269255,9.2580942)">
+	<g id="g3558">
+		<path id="path3560" inkscape:connector-curvature="0" fill="#FFFFFF" d="M5341.713,4039.516
+			c233.743,185.724,422.064,455.154,539.187,775.265c614.184-31.365,1045.852-179.853,1045.852-179.853
+			c0-575.31-238.61-1079.661-596.788-1361.947c-157.48,190.504-395.588,311.926-662.071,311.926
+			c-82.047,0-161.409-11.546-236.581-33.046c3.602,31.758,5.522,64.029,5.522,96.747
+			C5436.834,3789.577,5402.479,3922.502,5341.713,4039.516L5341.713,4039.516z"/>
+		<path id="path3562" inkscape:connector-curvature="0" fill="#FFFFFF" d="M3832.736,4039.516
+			c-60.755-117.013-95.121-249.938-95.121-390.907c0-32.642,1.905-64.836,5.484-96.529
+			c-71.777,19.469-147.265,29.935-225.209,29.935c-266.472,0-504.591-121.433-662.072-311.937
+			c-358.172,282.275-596.782,786.615-596.782,1361.925c0,0,418.534,150.452,1035.375,180.442
+			C3411.594,4493.359,3599.566,4224.803,3832.736,4039.516L3832.736,4039.516z"/>
+	</g>
+	<path id="path3564" inkscape:connector-curvature="0" fill="#FFFFFF" d="M5846.086,5557.196
+		c0-575.31-238.632-1079.661-596.788-1361.947c-157.502,190.504-395.589,311.926-662.066,311.926
+		c-266.472,0-504.591-121.422-662.071-311.926c-358.172,282.286-596.793,786.637-596.793,1361.947
+		c0,0,516.312,185.637,1247.258,185.637C5306.572,5742.833,5846.086,5557.196,5846.086,5557.196L5846.086,5557.196z"/>
+	<circle id="circle3566" fill="#FFFFFF" cx="4587.232" cy="3648.606" r="696.135"/>
+	<path id="path3568" inkscape:connector-curvature="0" fill="#FFFFFF" d="M5667.914,2030.198
+		c-384.479,0-696.143,311.664-696.143,696.143c0,60.957,7.88,120.069,22.613,176.415c181.708,99.399,323.08,263.291,393.428,460.883
+		c85.735,37.728,180.42,58.834,280.103,58.834c384.457,0,696.143-311.67,696.143-696.143S6052.371,2030.198,5667.914,2030.198
+		L5667.914,2030.198z"/>
+	<path id="path3570" inkscape:connector-curvature="0" fill="#FFFFFF" d="M4191.475,2899.667
+		c14.684-56.302,22.552-115.344,22.552-176.24c0-384.473-311.681-696.138-696.137-696.138
+		c-384.473,0-696.148,311.665-696.148,696.138s311.675,696.143,696.148,696.143c97.511,0,190.313-20.125,274.57-56.335
+		C3863.588,3163.754,4007.126,2998.679,4191.475,2899.667L4191.475,2899.667z"/>
+</g>
+<path fill="#FFFFFF" d="M484.724,157.266h-49.605v49.605c0,4.252-2.835,7.087-7.088,7.087h-14.173c-4.252,0-7.086-2.835-7.086-7.087
+	v-49.605h-49.605c-4.252,0-7.087-2.835-7.087-7.088v-14.173c0-4.252,2.835-7.086,7.087-7.086h49.605V79.312
+	c0-4.252,2.834-7.087,7.086-7.087h14.173c4.253,0,7.088,2.835,7.088,7.087v49.607h49.605c4.252,0,7.087,2.834,7.087,7.086v14.173
+	C491.811,154.431,488.976,157.266,484.724,157.266z"/>
+</svg>
