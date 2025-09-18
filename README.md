@@ -6,10 +6,11 @@ Make sure to upload your files containing user data to a secure folder!
 
 This package is currently maintained for the following versions:
 
-| TYPO3 Version         | Package Version | Branch  | Maintained    |
-|-----------------------|-----------------|---------|---------------|
-| TYPO3 11.5.x          | 2.x             | master  | Yes           |
-| TYPO3 8.7.x           | 1.x             | -       | No            |
+| TYPO3 Version | Package Version | Branch | Maintained |
+|---------------|-----------------|--------|------------|
+| TYPO3 13.4.x  | 3.x             | master | Yes        |
+| TYPO3 11.5.x  | 2.x             | v11    | No         |
+| TYPO3 8.7.x   | 1.x             | -      | No         |
 
 ### Setup a protected storage folder
 
