@@ -17,8 +17,18 @@
 		}
 	},
 	"require": {
-		"typo3/cms-core": "^11.5",
-		"phpoffice/phpspreadsheet": "^1.29.7"
+		"php": ">= 8.3",
+		"typo3/cms-core": "^13.4",
+		"phpoffice/phpspreadsheet": "^4"
+	},
+	"require-dev": {
+		"symplify/easy-coding-standard": "^12.4"
+	},
+	"config": {
+		"allow-plugins": {
+			"typo3/cms-composer-installers": true,
+			"typo3/class-alias-loader": true
+		}
 	},
 	"autoload": {
 		"psr-4": {

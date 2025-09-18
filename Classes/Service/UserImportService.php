@@ -21,12 +21,8 @@ use Visol\Userimport\Utility\LogUtility;
  ***/
 class UserImportService implements SingletonInterface
 {
-
     /**
      * Imports/updates all given rows as fe_user records respecting the options in the ImportJob
-     *
-     * @param array $rowsToImport
-     * @param ImportJob $importJob
      *
      * @return array
      */
@@ -37,7 +33,7 @@ class UserImportService implements SingletonInterface
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connectionPool->getQueryBuilderForTable('fe_users');
 
-        $updateExisting = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS);
+        $updateExisting = (bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS);
 
         $updatedRecords = 0;
         $insertedRecords = 0;
@@ -50,7 +46,7 @@ class UserImportService implements SingletonInterface
             $rowForLog = LogUtility::formatRowForImportLog($row);
 
             if ($updateExisting) {
-                $targetFolder = (int)$importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
+                $targetFolder = (int) $importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
                 $updateExistingUniqueField = $importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD);
                 $existing = $feUsersConnection->count(
                     'uid',
@@ -59,7 +55,7 @@ class UserImportService implements SingletonInterface
                         $updateExistingUniqueField => $row[$updateExistingUniqueField],
                         'pid' => $targetFolder,
                         'deleted' => 0,
-                        'disable' => 0
+                        'disable' => 0,
                     ]
                 );
                 if ($existing === 1) {
@@ -70,61 +66,55 @@ class UserImportService implements SingletonInterface
                             $updateExistingUniqueField => $row[$updateExistingUniqueField],
                             'pid' => $targetFolder,
                             'deleted' => 0,
-                            'disable' => 0
+                            'disable' => 0,
                         ]
                     );
-
                     if ($affectedRecords === 1) {
                         $log[] = [
                             'action' => 'update.success',
-                            'row' => $rowForLog
+                            'row' => $rowForLog,
                         ];
                     } else {
                         // Error case
                         $log[] = [
                             'action' => 'update.fail',
-                            'row' => $rowForLog
+                            'row' => $rowForLog,
                         ];
                     }
-
                     $updatedRecords += $affectedRecords;
-
                     continue;
-                } elseif ($existing > 1) {
+                }
+                if ($existing > 1) {
                     // More than one record, fail
                     $log[] = [
                         'action' => 'update.moreThanOneRecordFound',
-                        'row' => $rowForLog
+                        'row' => $rowForLog,
                     ];
                 }
             }
             // Must be newly imported
             $affectedRecords = $queryBuilder
-                ->insert('fe_users', null)
-                ->values($row)
-                ->execute();
+                ->insert('fe_users')->values($row)->executeStatement();
 
             if ($affectedRecords < 1) {
                 // Error case
                 $log[] = [
                     'action' => 'insert.fail',
-                    'row' => $rowForLog
+                    'row' => $rowForLog,
                 ];
             } else {
                 $log[] = [
                     'action' => 'insert.success',
-                    'row' => $rowForLog
+                    'row' => $rowForLog,
                 ];
             }
             $insertedRecords += $affectedRecords;
-
-            continue;
         }
 
         return [
             'insertedRecords' => $insertedRecords,
             'updatedRecords' => $updatedRecords,
-            'log' => $log
+            'log' => $log,
         ];
     }
 }

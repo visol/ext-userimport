@@ -1,25 +1,24 @@
 <?php
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-if (!defined('TYPO3')) {
-    die ('Access denied.');
-}
+
+defined('TYPO3') || die();
 
 $ll = 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:';
 
-$GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
+return [
     'ctrl' => [
         'hideTable' => true,
-        'title' => 'LLL:EXT:userimport/Resources/Private/Language/locallang_db.xlf:tx_userimport_domain_model_importjob',
+        'title' => $ll . 'tx_userimport_domain_model_importjob',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'enablecolumns' => [
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ],
         'searchFields' => 'title,style,cached_votes,cached_rank,image,votes,',
-        'iconfile' => 'EXT:userimport/Resources/Public/Icons/tx_userimport_domain_model_importjob.gif',
+        'typeicon_classes' => [
+            'default' => 'tx_userimport-importjob',
+        ],
     ],
     'types' => [
         '1' => ['showitem' => 'hidden,--palette--;;1,file,import_options,field_mapping'],
@@ -38,22 +37,20 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
         'file' => [
             'exclude' => true,
             'label' => $ll . 'tx_userimport_domain_model_importjob.file',
-            'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
-                'file',
-                [
-                    'appearance' => [
-                        'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
-                    ],
-                    'foreign_match_fields' => [
-                        'fieldname' => 'file',
-                        'tablenames' => 'tx_userimport_domain_model_importjob',
-                        'table_local' => 'sys_file',
-                    ],
-                    'minitems' => 1,
-                    'maxitems' => 1,
+            'config' => [
+                // !!! Watch out for fieldName different from columnName
+                'type' => 'file',
+                'allowed' => 'xlsx,csv',
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                 ],
-                'xlsx,csv'
-            ),
+                'foreign_match_fields' => [
+                    'fieldname' => 'file',
+                    'tablenames' => 'tx_userimport_domain_model_importjob',
+                ],
+                'minitems' => 1,
+                'maxitems' => 1,
+            ],
         ],
         'import_options' => [
             'exclude' => true,
@@ -62,7 +59,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
                 'type' => 'text',
                 'cols' => 60,
                 'rows' => 5,
-            ]
+            ],
         ],
         'field_mapping' => [
             'exclude' => true,
@@ -71,7 +68,7 @@ $GLOBALS['TCA']['tx_userimport_domain_model_importjob'] = [
                 'type' => 'text',
                 'cols' => 60,
                 'rows' => 5,
-            ]
+            ],
         ],
     ],
 ];

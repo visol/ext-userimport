@@ -1,7 +1,5 @@
 <?php
 
-namespace Visol\Userimport\Controller;
-
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -13,101 +11,93 @@ namespace Visol\Userimport\Controller;
  *
  ***/
 
+namespace Visol\Userimport\Controller;
+
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use Visol\Userimport\Domain\Repository\ImportJobRepository;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
-use Visol\Userimport\Service\SpreadsheetService;
-use Visol\Userimport\Service\UserImportService;
-use Visol\Userimport\Service\TcaService;
-use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Controller\FileUploadConfiguration;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator;
 use Visol\Userimport\Domain\Model\ImportJob;
-use Visol\Userimport\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
+use Visol\Userimport\Domain\Repository\ImportJobRepository;
+use Visol\Userimport\Service\SpreadsheetService;
+use Visol\Userimport\Service\TcaService;
+use Visol\Userimport\Service\UserImportService;
 
-/**
- * UserimportController
- */
-class UserimportController extends ActionController
+#[AsController]
+final class UserimportController extends ActionController
 {
+    public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected ExtensionConfiguration $extensionConfiguration,
+        protected ImportJob $importJob,
+        protected ImportJobRepository $importJobRepository,
+        protected PersistenceManagerInterface $persistenceManager,
+        protected SpreadsheetService $spreadsheetService,
+        protected UserImportService $userImportService,
+        protected TcaService $tcaService,
+    ) {
+    }
 
-    /**
-     * @var ImportJobRepository
-     */
-    protected $importJobRepository = null;
-
-    /**
-     * @var PersistenceManagerInterface
-     */
-    protected $persistenceManager = null;
-
-    /**
-     * @var SpreadsheetService
-     */
-    protected $spreadsheetService = null;
-
-    /**
-     * @var UserImportService
-     */
-    protected $userImportService = null;
-
-    /**
-     * @var TcaService
-     */
-    protected $tcaService = null;
-
-    /**
-     * @return void
-     */
     public function mainAction(): ResponseInterface
     {
-        $importJob = GeneralUtility::makeInstance(ImportJob::class);
+        $this->view = $this->moduleTemplateFactory->create($this->request);
 
-        $extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
-        $moduleConfiguration = $extensionConfiguration->get('userimport');
+        $moduleConfiguration = $this->extensionConfiguration->get('userimport');
 
-        if (!empty($moduleConfiguration['uploadStorageFolder'])) {
+        if ($moduleConfiguration['uploadStorageFolder'] !== '') {
             $this->view->assign('uploadStorageFolder', $moduleConfiguration['uploadStorageFolder']);
         }
 
-        $this->view->assign('importJob', $importJob);
-        return $this->htmlResponse();
+        $this->view->assign('importJob', $this->importJob);
+        return $this->view->renderResponse('Userimport/Main');
     }
 
     protected function initializeUploadAction()
     {
-        /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
-        $propertyMappingConfiguration = $this->arguments['importJob']->getPropertyMappingConfiguration();
-        $uploadConfiguration = [
-            UploadedFileReferenceConverter::CONFIGURATION_ALLOWED_FILE_EXTENSIONS => 'xlsx,csv'
-        ];
-        $propertyMappingConfiguration->allowProperties('file');
-        $propertyMappingConfiguration->forProperty('file')
-            ->setTypeConverterOptions(
-                UploadedFileReferenceConverter::class,
-                $uploadConfiguration
-            );
+        // As Validators can contain state, do not inject them
+        $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
+        $mimeTypeValidator->setOptions([
+            'allowedMimeTypes' => ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+            'ignoreFileExtensionCheck' => false,
+            'notAllowedMessage' => 'Not allowed file type',
+            'invalidExtensionMessage' => 'Invalid file extension',
+        ]);
+
+        $moduleConfiguration = $this->extensionConfiguration->get('userimport');
+
+        $fileHandlingServiceConfiguration = $this->arguments->getArgument('importJob')->getFileHandlingServiceConfiguration();
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration(
+            (new FileUploadConfiguration('file'))
+                ->setRequired()
+                ->addValidator($mimeTypeValidator)
+                ->setMaxFiles(1)
+                ->setUploadFolder($moduleConfiguration['uploadStorageFolder']),
+        );
+
+        // Extbase's property mapping is not handling FileUploads, so it must not operate on this property.
+        // When using the FileUpload attribute/annotation, this internally does the same. This is covered
+        // by the `addFileUploadConfiguration()` functionality.
+        $this->arguments->getArgument('importJob')->getPropertyMappingConfiguration()->skipProperties('file');
     }
 
     /**
-     * @param ImportJob $importJob
-     *
-     * @return void
+     * @return ResponseInterface
      */
     public function uploadAction(ImportJob $importJob)
     {
         $this->importJobRepository->add($importJob);
         $this->persistenceManager->persistAll();
-        $this->redirect('options', null, null, ['importJob' => $importJob]);
+        return $this->redirect('options', null, null, ['importJob' => $importJob]);
     }
 
-    /**
-     * @param ImportJob $importJob
-     */
     public function optionsAction(ImportJob $importJob): ResponseInterface
     {
+        $this->view = $this->moduleTemplateFactory->create($this->request);
         $this->view->assign('importJob', $importJob);
 
         if ($importJob->getFile() instanceof FileReference) {
@@ -119,14 +109,12 @@ class UserimportController extends ActionController
         $this->view->assign('frontendUserFolders', $this->tcaService->getFrontendUserFolders());
         $this->view->assign('frontendUserGroups', $this->tcaService->getFrontendUserGroups());
         $this->view->assign('frontendUserTableFieldNames', $this->tcaService->getFrontendUserTableUniqueFieldNames());
-        return $this->htmlResponse();
+        return $this->view->renderResponse('Userimport/Options');
     }
 
-    /**
-     * @param ImportJob $importJob
-     */
     public function fieldMappingAction(ImportJob $importJob): ResponseInterface
     {
+        $this->view = $this->moduleTemplateFactory->create($this->request);
         $this->view->assign('importJob', $importJob);
 
         // Update ImportJob with options
@@ -137,7 +125,7 @@ class UserimportController extends ActionController
             ImportJob::IMPORT_OPTION_GENERATE_PASSWORD,
             ImportJob::IMPORT_OPTION_USER_GROUPS,
             ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS,
-            ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD
+            ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD,
         ];
         $fieldOptionsArray = [];
         foreach ($fieldOptionArguments as $argumentName) {
@@ -159,21 +147,18 @@ class UserimportController extends ActionController
         );
 
         // If username is not generated from e-mail, the field must be mapped
-        $usernameMustBeMapped = !(bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        $usernameMustBeMapped = !(bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
         $this->view->assign('usernameMustBeMapped', $usernameMustBeMapped);
 
         // If username is generated from e-mail, the field e-mail must be mapped
-        $emailMustBeMapped = (bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        $emailMustBeMapped = (bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
         $this->view->assign('emailMustBeMapped', $emailMustBeMapped);
-        return $this->htmlResponse();
+        return $this->view->renderResponse('Userimport/FieldMapping');
     }
 
-    /**
-     * @param ImportJob $importJob
-     * @param array $fieldMapping
-     */
     public function importPreviewAction(ImportJob $importJob, array $fieldMapping): ResponseInterface
     {
+        $this->view = $this->moduleTemplateFactory->create($this->request);
         $this->view->assign('importJob', $importJob);
 
         // Update ImportJob with field mapping
@@ -184,19 +169,16 @@ class UserimportController extends ActionController
         $previewData = $this->spreadsheetService->generateDataFromImportJob($importJob, true);
         $this->view->assign('previewDataHeader', array_keys($previewData[0]));
         $this->view->assign('previewData', $previewData);
-        return $this->htmlResponse();
+        return $this->view->renderResponse('Userimport/ImportPreview');
     }
 
-    /**
-     * @param ImportJob $importJob
-     */
     public function performImportAction(ImportJob $importJob): ResponseInterface
     {
+        $this->view = $this->moduleTemplateFactory->create($this->request);
         $rowsToImport = $this->spreadsheetService->generateDataFromImportJob($importJob);
         $this->view->assign('rowsInSource', count($rowsToImport));
 
         $result = $this->userImportService->performImport($importJob, $rowsToImport);
-
 
         $this->view->assign('updatedRecords', $result['updatedRecords']);
         $this->view->assign('insertedRecords', $result['insertedRecords']);
@@ -207,41 +189,14 @@ class UserimportController extends ActionController
         // Remove import job
         $this->importJobRepository->remove($importJob);
         $this->persistenceManager->persistAll();
-        return $this->htmlResponse();
+        return $this->view->renderResponse('Userimport/PerformImport');
     }
 
     /**
      * Deactivate errorFlashMessage
-     *
-     * @return bool|string
      */
-    public function getErrorFlashMessage()
+    public function getErrorFlashMessage(): bool|string
     {
         return false;
-    }
-
-    public function injectImportJobRepository(ImportJobRepository $importJobRepository): void
-    {
-        $this->importJobRepository = $importJobRepository;
-    }
-
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
-    {
-        $this->persistenceManager = $persistenceManager;
-    }
-
-    public function injectSpreadsheetService(SpreadsheetService $spreadsheetService): void
-    {
-        $this->spreadsheetService = $spreadsheetService;
-    }
-
-    public function injectUserImportService(UserImportService $userImportService): void
-    {
-        $this->userImportService = $userImportService;
-    }
-
-    public function injectTcaService(TcaService $tcaService): void
-    {
-        $this->tcaService = $tcaService;
     }
 }

@@ -1,19 +1,19 @@
 <?php
+
 namespace Visol\Userimport\Tests\Unit\Controller;
 
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use Visol\Userimport\Controller\UserimportController;
+
 /**
  * Test case.
- *
- * @author Lorenz Ulrich <lorenz.ulrich@visol.ch>
  */
 class UserimportControllerTest extends UnitTestCase
 {
     /**
      * @var UserimportController
      */
-    protected $subject = null;
+    protected $subject;
 
     protected function setUp()
     {
@@ -28,5 +28,4 @@ class UserimportControllerTest extends UnitTestCase
     {
         parent::tearDown();
     }
-
 }

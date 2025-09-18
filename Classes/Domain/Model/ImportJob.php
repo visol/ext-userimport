@@ -2,9 +2,10 @@
 
 namespace Visol\Userimport\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -17,24 +18,20 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
  ***/
 class ImportJob extends AbstractEntity
 {
+    public const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
+    public const IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES = 'firstRowContainsFieldNames';
+    public const IMPORT_OPTION_USE_EMAIL_AS_USERNAME = 'useEmailAsUsername';
+    public const IMPORT_OPTION_GENERATE_PASSWORD = 'generatePassword';
+    public const IMPORT_OPTION_USER_GROUPS = 'userGroups';
+    public const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
+    public const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
 
-    const IMPORT_OPTION_TARGET_FOLDER = 'targetFolder';
-    const IMPORT_OPTION_FIRST_ROW_CONTAINS_FIELD_NAMES = 'firstRowContainsFieldNames';
-    const IMPORT_OPTION_USE_EMAIL_AS_USERNAME = 'useEmailAsUsername';
-    const IMPORT_OPTION_GENERATE_PASSWORD = 'generatePassword';
-    const IMPORT_OPTION_USER_GROUPS = 'userGroups';
-    const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
-    const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
-
-    /**
-     * @var FileReference
-     */
-    protected $file = null;
+    protected ?FileReference $file = null;
 
     /**
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\ORM\Transient
      */
+    #[Transient]
     protected $importOptions;
 
     /**
@@ -42,80 +39,51 @@ class ImportJob extends AbstractEntity
      */
     protected $fieldMapping;
 
-    /**
-     * @return FileReference $file
-     */
-    public function getFile()
+    public function getFile(): ?FileReference
     {
         return $this->file;
     }
 
-    /**
-     * Sets the image
-     *
-     * @param FileReference $file
-     *
-     * @return void
-     */
-    public function setFile(FileReference $file)
+    public function setFile(?FileReference $file): void
     {
         $this->file = $file;
     }
 
-    /**
-     * @return string
-     */
     public function getImportOptions(): string
     {
         return $this->importOptions;
     }
 
-    /**
-     * @return array
-     */
     public function getImportOptionsArray(): array
     {
-        return !empty($this->importOptions) ? unserialize($this->importOptions) : [];
+        return empty($this->importOptions) ? [] : unserialize($this->importOptions);
     }
 
     /**
      * @param string $option
-     *
      * @return mixed
      */
     public function getImportOption($option)
     {
-        return array_key_exists($option, $this->getImportOptionsArray()) ? $this->getImportOptionsArray()[$option] : null;
+        return $this->getImportOptionsArray()[$option] ?? null;
     }
 
-    /**
-     * @param array $importOptions
-     */
-    public function setImportOptions(array $importOptions)
+    public function setImportOptions(array $importOptions): void
     {
         $this->importOptions = serialize($importOptions);
     }
 
-    /**
-     * @return string
-     */
     public function getFieldMapping(): string
     {
         return $this->fieldMapping;
     }
 
-    /**
-     * @return array
-     */
     public function getFieldMappingArray(): array
     {
-        return !empty($this->fieldMapping) ? unserialize($this->fieldMapping) : [];
+        return empty($this->fieldMapping) ? [] : unserialize($this->fieldMapping);
     }
 
-    /**
-     * @param array $fieldMapping
-     */
-    public function setFieldMapping(array $fieldMapping)
+    public function setFieldMapping(array $fieldMapping): void
     {
         $this->fieldMapping = serialize($fieldMapping);
     }

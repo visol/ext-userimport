@@ -1,7 +1,5 @@
 <?php
 
-namespace Visol\Userimport\Service;
-
 /***
  *
  * This file is part of the "Frontend User Import" Extension for TYPO3 CMS.
@@ -12,12 +10,15 @@ namespace Visol\Userimport\Service;
  *  (c) 2018 Lorenz Ulrich <lorenz.ulrich@visol.ch>, visol digitale Dienstleistungen GmbH
  *
  ***/
-use TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+
+namespace Visol\Userimport\Service;
+
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\SaltedPasswordsUtility;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -26,14 +27,12 @@ use Visol\Userimport\Domain\Model\ImportJob;
 
 class SpreadsheetService implements SingletonInterface
 {
-
     /**
      * Return the content of the spreadsheet's first worksheet
      *
      * @param string $fileName
-     * @param int $numberOfRowsToReturn
+     * @param null|int $numberOfRowsToReturn
      * @param bool $skipFirstRow
-     *
      * @return array
      */
     public function getContent($fileName, $numberOfRowsToReturn = null, $skipFirstRow = false)
@@ -72,7 +71,6 @@ class SpreadsheetService implements SingletonInterface
      * @param $fileName
      * @param bool $firstRowContainsFieldNames
      * @param int $numberOfExamples
-     *
      * @return array
      */
     public function getColumnLabelsAndExamples($fileName, $firstRowContainsFieldNames = false, $numberOfExamples = 5)
@@ -118,9 +116,7 @@ class SpreadsheetService implements SingletonInterface
     /**
      * Generate data from import job data and configuration
      *
-     * @param ImportJob $importJob
      * @param bool $isPreview
-     *
      * @return array
      */
     public function generateDataFromImportJob(ImportJob $importJob, $isPreview = false)
@@ -147,8 +143,8 @@ class SpreadsheetService implements SingletonInterface
             // Use tcaDefaultsRow if not empty
             $row = empty($tcaDefaultsRow) ? [] : $tcaDefaultsRow;
             foreach ($fieldMapping as $columnIndex => $fieldName) {
-                $value = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($columnIndex), $rowIndex)->getValue();
-                $row[$fieldName] = !empty($value) ? $value : '';
+                $value = $worksheet->getCell(Coordinate::indexesFromString($columnIndex . $rowIndex))->getValue();
+                $row[$fieldName] = empty($value) ? '' : $value;
             }
 
             if (!array_filter($row)) {
@@ -158,7 +154,7 @@ class SpreadsheetService implements SingletonInterface
             $rows[$i] = $row;
 
             // Process import options
-            if ((bool)$importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME)) {
+            if ((bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME)) {
                 $rows[$i]['username'] = $rows[$i]['email'];
             }
 
@@ -196,7 +192,7 @@ class SpreadsheetService implements SingletonInterface
                 $rows[$i]['password'] = $saltedPassword;
 
                 // PID
-                $rows[$i]['pid'] = (int)$importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
+                $rows[$i]['pid'] = (int) $importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
 
                 // crtime/tstamp
                 $rows[$i]['crdate'] = time();
@@ -205,7 +201,7 @@ class SpreadsheetService implements SingletonInterface
                 // User groups
                 if (!empty($importJob->getImportOption(ImportJob::IMPORT_OPTION_USER_GROUPS))) {
                     $rows[$i]['usergroup'] = implode(',', $importJob->getImportOption(ImportJob::IMPORT_OPTION_USER_GROUPS));
-                };
+                }
             }
 
             $i++;
@@ -219,7 +215,6 @@ class SpreadsheetService implements SingletonInterface
      * Respects the TSConfig applying to the given page
      *
      * @param $targetFolderUid
-     *
      * @return array
      */
     protected function getTcaDefaultsRow($targetFolderUid)
@@ -248,7 +243,6 @@ class SpreadsheetService implements SingletonInterface
 
     /**
      * @param string $fileName
-     *
      * @return Spreadsheet
      */
     protected function getSpreadsheet($fileName)

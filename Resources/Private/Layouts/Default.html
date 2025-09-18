@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<f:be.pageRenderer includeCssFiles="{0: '{f:uri.resource(path: \'Stylesheets/backend.css\')}'}" includeJsFiles="{0: '{f:uri.resource(path: \'JavaScripts/backend.js\')}'}" />
+<div class="typo3-fullDoc">
+  <div id="typo3-docbody">
+    <div id="typo3-inner-docbody">
+      <h1>{f:translate(key: 'moduleTitle')}</h1>
+      <f:flashMessages/>
+      <f:render section="content" />
+    </div>
+  </div>
+</div>
+</html>
