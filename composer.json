@@ -19,7 +19,7 @@
 	"require": {
 		"php": ">= 8.3",
 		"typo3/cms-core": "^13.4",
-		"phpoffice/phpspreadsheet": "^4"
+		"phpoffice/phpspreadsheet": "^5"
 	},
 	"require-dev": {
 		"symplify/easy-coding-standard": "^12.4"
