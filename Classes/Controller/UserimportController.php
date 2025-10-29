@@ -62,7 +62,7 @@ final class UserimportController extends ActionController
         // As Validators can contain state, do not inject them
         $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
         $mimeTypeValidator->setOptions([
-            'allowedMimeTypes' => ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+            'allowedMimeTypes' => ['text/plain', 'text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
             'ignoreFileExtensionCheck' => false,
             'notAllowedMessage' => 'Not allowed file type',
             'invalidExtensionMessage' => 'Invalid file extension',
