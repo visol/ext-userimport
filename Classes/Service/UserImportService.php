@@ -45,6 +45,15 @@ class UserImportService implements SingletonInterface
         foreach ($rowsToImport as $row) {
             $rowForLog = LogUtility::formatRowForImportLog($row);
 
+            // Validate email format if email field is present
+            if (isset($row['email']) && !filter_var($row['email'], FILTER_VALIDATE_EMAIL)) {
+                $log[] = [
+                    'action' => 'skip.invalidEmail',
+                    'row' => $rowForLog,
+                ];
+                continue;
+            }
+
             if ($updateExisting) {
                 $targetFolder = (int) $importJob->getImportOption(ImportJob::IMPORT_OPTION_TARGET_FOLDER);
                 $updateExistingUniqueField = $importJob->getImportOption(ImportJob::IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD);
