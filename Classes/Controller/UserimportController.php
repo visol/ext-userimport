@@ -16,6 +16,7 @@ namespace Visol\Userimport\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -169,6 +170,25 @@ final class UserimportController extends ActionController
         $previewData = $this->spreadsheetService->generateDataFromImportJob($importJob, true);
         $this->view->assign('previewDataHeader', array_keys($previewData[0]));
         $this->view->assign('previewData', $previewData);
+
+        // Validate email addresses in mapped data
+        $invalidEmails = [];
+        $useEmailAsUsername = (bool) $importJob->getImportOption(ImportJob::IMPORT_OPTION_USE_EMAIL_AS_USERNAME);
+        foreach ($previewData as $row) {
+            if (isset($row['email']) && !filter_var($row['email'], FILTER_VALIDATE_EMAIL)) {
+                $invalidEmails[] = $row['email'];
+            } elseif ($useEmailAsUsername && isset($row['username']) && !filter_var($row['username'], FILTER_VALIDATE_EMAIL)) {
+                $invalidEmails[] = $row['username'];
+            }
+        }
+        if (!empty($invalidEmails)) {
+            $this->addFlashMessage(
+                'The following email addresses are invalid and will be skipped during import: '
+                . implode(', ', $invalidEmails),
+                'Invalid email addresses detected',
+                ContextualFeedbackSeverity::WARNING
+            );
+        }
         return $this->view->renderResponse('Userimport/ImportPreview');
     }
 
