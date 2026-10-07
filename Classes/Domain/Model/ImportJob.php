@@ -2,6 +2,7 @@
 
 namespace Visol\Userimport\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Annotation\ORM\Transient;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -26,6 +27,9 @@ class ImportJob extends AbstractEntity
     public const IMPORT_OPTION_UPDATE_EXISTING_USERS = 'updateExistingUsers';
     public const IMPORT_OPTION_UPDATE_EXISTING_USERS_UNIQUE_FIELD = 'updateExistingUsersUniqueField';
 
+    #[Cascade([
+        'value' => 'remove',
+    ])]
     protected ?FileReference $file = null;
 
     /**
